@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		
+		<title>Page title</title>
+		<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport" />
+		<meta content="#1a1a1a" name="theme-color">
+		
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+	
+	</head>
+	<body>
+	
+		<nav>
+			<div class="nav_item">Home</div>
+		</nav>
+		
+		<section id="content">
+		{% block content %}
+		{% endblock %}
+		</section>
+	
+	</body>
+</html>
