@@ -6,10 +6,59 @@ body, html {
 }
 
 nav {
+	display: inline-block;
 	width:100%;
 	border-bottom:0.1em solid #1a1a1a;
 }
 
-nav ol {
-	list-style-type: none;
+nav div{
+	height:3em;
+	line-height:3em;
+}
+
+nav div#search {
+	width:80%;
+	float:left;
+}
+
+input[type="search"]#site_search {
+	display:block;
+    min-width:268px;
+	font-size:1.2em;
+    width:98%;
+	height:100%;
+	padding:0 1%;
+    color:#1a1a1a;
+    background-color:#fff;
+    background-image:none;
+    border:none;
+    border-radius:0;
+}
+
+nav div {
+	width:20%;
+	margin:0;
+	padding:0;
+	float:left;
+	list-style-type:none;
+	display:flex;
+	flex-direction:row;
+}
+
+nav div a {
+	display:block;
+	flex:1 0;
+	font-size:1.5em;
+	text-align:center;
+	border-left:0.1em solid #1a1a1a;
+	color:#1a1a1a;
+	transition:0.2s ease-in-out color, 0.2s ease-in-out background-color;
+}
+
+nav div a:visited {
+	color:#1a1a1a;
+}
+nav div a:hover {
+	color:#fff;
+	background-color:#1a1a1a;
 }

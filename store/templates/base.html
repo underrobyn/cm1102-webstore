@@ -9,6 +9,7 @@
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
 
 		<!-- Webfont -->
+		<!-- Use CDN: https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/solid.min.js -->
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/solid.min.css') }}">
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/fontawesome.min.css') }}">
 
@@ -19,17 +20,23 @@
 			<div id="search">
 				<input type="search" id="site_search" name="site_search" placeholder="Search Products..." maxlength="150" />
 			</div>
-			<ol id="actions">
-				<li><i class="fas fa-home"></i></li>
-				<li><i class="fas fa-user-circle"></i></li>
-				<li><i class="fas fa-shopping-basket"></i></li>
-			</ol>
+			<div id="actions">
+				<a href="{{ url_for('home') }}">
+					<i class="fas fa-home"></i>
+				</a>
+				<a href="{{ url_for('account') }}">
+					<i class="fas fa-user-circle"></i>
+				</a>
+				<a href="{{ url_for('basket') }}">
+					<i class="fas fa-shopping-basket"></i>
+				</a>
+			</div>
 		</nav>
 		
-		<section id="content">
+		<main>
 		{% block content %}
 		{% endblock %}
-		</section>
+		</main>
 	
 	</body>
 </html>
