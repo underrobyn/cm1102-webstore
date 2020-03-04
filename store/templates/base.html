@@ -2,17 +2,28 @@
 <html lang="en">
 	<head>
 		
-		<title>Page title</title>
+		<title>{% block title %}{% endblock %}</title>
 		<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport" />
 		<meta content="#1a1a1a" name="theme-color">
 		
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-	
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+
+		<!-- Webfont -->
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/solid.min.css') }}">
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/fontawesome.min.css') }}">
+
 	</head>
 	<body>
 	
 		<nav>
-			<div class="nav_item">Home</div>
+			<div id="search">
+				<input type="search" id="site_search" name="site_search" placeholder="Search Products..." maxlength="150" />
+			</div>
+			<ol id="actions">
+				<li><i class="fas fa-home"></i></li>
+				<li><i class="fas fa-user-circle"></i></li>
+				<li><i class="fas fa-shopping-basket"></i></li>
+			</ol>
 		</nav>
 		
 		<section id="content">

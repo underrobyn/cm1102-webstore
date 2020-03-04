@@ -4,3 +4,12 @@ body, html {
 	
 	font-family:sans-serif;
 }
+
+nav {
+	width:100%;
+	border-bottom:0.1em solid #1a1a1a;
+}
+
+nav ol {
+	list-style-type: none;
+}
