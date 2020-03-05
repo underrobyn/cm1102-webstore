@@ -1,8 +1,9 @@
 from flask import render_template, url_for, request, redirect, flash, make_response
-from store import app
+from store import app, admin, db
 from store.models import User, Billing, Address, OrderProducts, Orders, Products
 from store.forms import CreateForm, LoginForm
 from flask_login import login_user, logout_user
+from flask_admin.contrib.sqla import ModelView
 
 # App routes
 @app.route("/")
@@ -21,6 +22,14 @@ def basket():
 @app.route("/product/<int:product_id>", methods=['GET'])
 def product(product_id):
 	return render_template('product.html', product_id=product_id)
+
+# Admin views
+admin.add_view(ModelView(User, db.session))
+admin.add_view(ModelView(Billing, db.session))
+admin.add_view(ModelView(Address, db.session))
+admin.add_view(ModelView(OrderProducts, db.session))
+admin.add_view(ModelView(Orders, db.session))
+admin.add_view(ModelView(Products, db.session))
 
 # Account system routes
 @app.route("/create",methods=['GET','POST'])
