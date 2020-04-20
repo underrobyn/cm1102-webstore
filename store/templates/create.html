@@ -7,5 +7,14 @@
 {% block content %}
 	<section>
 		<h1>Create</h1>
+		<form method="POST" action="">
+  			{{ form.csrf_token }}
+			{% for error in form.name.errors %}<span class="error_message">[{{ error }}]</span>{% endfor %}
+  			{{ form.name.label }} {{ form.name }}
+  			{{ form.email.label }} {{ form.email }}
+  			{{ form.password.label }} {{ form.password }}
+  			{{ form.confirm_password.label }} {{ form.confirm_password }}
+  			<input type="submit" value="Create Account">
+		</form>
 	</section>
 {% endblock content %}
