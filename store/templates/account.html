@@ -7,7 +7,12 @@
 {% block content %}
 	<section>
 		<h1>Account</h1>
-
-		<h2>Form to change account details here</h2>
+		{% if current_user.is_authenticated %}
+		{{ current_user.username }}
+		<a href="{{ url_for('logout') }}">Logout</a>&nbsp|
+		{% else %}
+		Hello, Guest! &nbsp| <a href="{{ url_for('login') }}">Login&nbsp;</a>
+		or <a href="{{ url_for('create') }}">Register</a>&nbsp|
+		{% endif %}
 	</section>
 {% endblock content %}
