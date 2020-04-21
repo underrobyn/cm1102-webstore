@@ -14,26 +14,21 @@ This is submission of Group 5
 Group Member 1:
   1. Student number: 1931370
   2. Email address: mcneillj@cardiff.ac.uk
-  3. Responsible for the following functionality: Admin Pages
+  3. Responsible for the following functionality: Admin Pages & User Account functionality
 
 Group Member 2:
   1. Student number:
   2. Email address:
-  3. Responsible for the following functionality:
+  3. Responsible for the following functionality: Checkout pages
 
 Group Member 3:
   1. Student number:
   2. Email address:
-  3. Responsible for the following functionality:
+  3. Responsible for the following functionality: Shopping Basket
 
 Group Member 4:
   1. Student number:
   2. Email address:
-  3. Responsible for the following functionality:
-
-Group Member 5:
-  1. Student number:
-  2. Email address:
-  3. Responsible for the following functionality:
+  3. Responsible for the following functionality: Product Pages
 
 4. Full (40 characters) CHECKSUM of our last commit on GitLab (group submission):

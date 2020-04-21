@@ -1,17 +1,43 @@
 {% extends "base.html" %}
 
-{% block title %}
-	Account
-{% endblock title %}
+{% block title %}{{ title }}{% endblock title %}
 
 {% block content %}
-	<section>
-		<h1>Account</h1>
-		{% if current_user.is_authenticated %}
-		{{ current_user.name }}
-		<a href="{{ url_for('logout') }}">Logout</a>&nbsp|
-		{% else %}
-		You are not logged in.
-		{% endif %}
+	<section class="form">
+		<h1>Your Account</h1>
+		<fieldset>
+			<legend>Update Email</legend>
+			<form method="POST" action="{{ url_for('account') }}">
+				{{ update_email.csrf_token }}
+
+				{{ update_email.email.label }}
+				{{ update_email.email }}
+
+				{{ update_email.password.label }}
+				{{ update_email.password }}
+
+				<input type="submit" value="Update Email">
+			</form>
+		</fieldset>
+
+		<fieldset>
+			<legend>Update Password</legend>
+			<form method="POST" action="{{ url_for('account') }}">
+				{{ update_password.csrf_token }}
+
+				{{ update_password.current_password.label }}
+				{{ update_password.current_password }}
+
+				{{ update_password.new_password.label }}
+				{{ update_password.new_password }}
+
+				{{ update_password.confirm_new_password.label }}
+				{{ update_password.confirm_new_password }}
+
+				<input type="submit" value="Update Password">
+			</form>
+		</fieldset>
+
+		<h3>Not, {{ current_user.name }}? <a href="{{ url_for('logout') }}">Logout.</a></h3>
 	</section>
 {% endblock content %}

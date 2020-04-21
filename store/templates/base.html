@@ -28,6 +28,9 @@
 				<a href="{{ url_for('account') }}" title="Your Account">
 					<i class="fas fa-user-circle"></i>
 				</a>
+				<a href="{{ url_for('logout') }}" title="Logout">
+					<i class="fas fa-sign-out-alt"></i>
+				</a>
 				{% else %}
 				<a href="{{ url_for('login') }}" title="Login">
 					<i class="fas fa-sign-in-alt"></i>
@@ -42,6 +45,7 @@
 		{% with messages = get_flashed_messages() %}
 		  	{% if messages %}
 			<div id="alerts" class="neutral">
+				<h3>Message from system:</h3>
 				<ul>
 				{% for message in messages %}
 					<li>{{ message }}</li>

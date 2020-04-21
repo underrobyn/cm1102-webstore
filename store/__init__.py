@@ -9,9 +9,11 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = c.secret_key
 app.config['SQLALCHEMY_DATABASE_URI'] = c.db_uri
 
+
 @app.context_processor
 def inject_globals():
     return dict(store_name=c.store_name)
+
 
 db = SQLAlchemy(app)
 
@@ -21,3 +23,4 @@ login_manager.init_app(app)
 admin = Admin(app, name='ToBeNamedAdmin', template_mode='bootstrap3')
 
 from store import routes
+from store import views
