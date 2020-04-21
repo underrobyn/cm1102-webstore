@@ -9,6 +9,10 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = c.secret_key
 app.config['SQLALCHEMY_DATABASE_URI'] = c.db_uri
 
+@app.context_processor
+def inject_globals():
+    return dict(store_name=c.store_name)
+
 db = SQLAlchemy(app)
 
 login_manager = LoginManager()
