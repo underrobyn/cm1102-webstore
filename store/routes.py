@@ -21,12 +21,6 @@ def basket():
 @app.route('/checkout', methods=['GET'])
 @login_required
 def checkout():
-    return render_template('checkout.html')
-
-
-@app.route('/checkout', methods=['GET'])
-@login_required
-def checkout():
     return render_template('checkout.html', title='Checkout')
 
 
