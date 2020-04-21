@@ -1,19 +1,26 @@
 {% extends "base.html" %}
 
-{% block title %}
-	Create
-{% endblock title %}
+{% block title %}{{ title }}{% endblock title %}
 
 {% block content %}
 	<section class="form">
 		<h1>Create</h1>
-		<form method="POST" action="">
+		<form method="POST" name="create" action="{{ url_for('create') }}">
   			{{ form.csrf_token }}
 			{% for error in form.name.errors %}<span class="error_message">[{{ error }}]</span>{% endfor %}
-  			{{ form.name.label }} {{ form.name }}
-  			{{ form.email.label }} {{ form.email }}
-  			{{ form.password.label }} {{ form.password }}
-  			{{ form.confirm_password.label }} {{ form.confirm_password }}
+
+  			{{ form.name.label }}
+			{{ form.name }}
+
+			{{ form.email.label }}
+			{{ form.email }}
+
+  			{{ form.password.label }}
+			{{ form.password }}
+
+			{{ form.confirm_password.label }}
+			{{ form.confirm_password }}
+
   			<input type="submit" value="Create Account">
 			<span>Already have an account? <a href="{{ url_for('login') }}">Login here!</a></span>
 		</form>

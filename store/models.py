@@ -30,11 +30,9 @@ class User(UserMixin, db.Model):
 	def verify_password(self,password):
 		return check_password_hash(self.password_hash,password)
 
-	def get_id(self):
-		return self.id
-
 	def __unicode__(self):
 		return self.name
+
 
 @login_manager.user_loader
 def load_user(user_id):

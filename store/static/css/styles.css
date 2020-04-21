@@ -6,9 +6,10 @@ body, html {
 }
 
 h1, h2, h3 {
-	margin:0.5rem 0;
+	margin:0.25rem 0;
 	font-weight: 900;
 }
+
 h1 {
 	font-size:2.3rem;
 }
@@ -83,11 +84,16 @@ nav div a:hover {
 	margin-bottom: 1rem;
 	border: 1px solid transparent;
 	border-radius: 0;
+	font-size:1.4rem;
+}
+
+#alerts ul {
+	margin:0.25rem 0;
 }
 
 .neutral {
     color:#1a1a1a;
-	background-color: #fff;
+	background-color: #eee;
 	border-color: #1a1a1a;
 }
 
@@ -132,11 +138,23 @@ form input[type="submit"] {
 }
 
 form label {
-    display:block;
     width:100%;
-	margin:2rem 0 0 0;
-    text-transform: uppercase;
 	letter-spacing:0.2rem;
+}
+
+fieldset {
+	margin:1.5rem 0;
+}
+
+fieldset legend {
+	font-size:1.2rem;
+	letter-spacing:0.1rem;
+}
+
+form label, fieldset legend {
+    display:block;
+	margin:1.5rem 0 0 0;
+    text-transform: uppercase;
 	font-weight:900;
 }
 
@@ -148,13 +166,13 @@ form span {
 
 section.form {
 	width:50%;
-	margin:3% 25%;
+	margin:1% 25%;
 }
 
 @media screen and (max-width: 1280px) {
 	section.form {
 		width:60%;
-		margin:3% 20%;
+		margin:2% 20%;
 	}
 }
 

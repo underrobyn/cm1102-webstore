@@ -1,22 +1,16 @@
 from flask import render_template, url_for, request, redirect, flash, make_response
-from store import app, admin, db, login_manager
-from store.models import User, Billing, Address, OrderProducts, Orders, Products
-from store.forms import CreateForm, LoginForm
 from flask_login import login_user, logout_user, current_user, login_required
-from flask_admin.contrib.sqla import ModelView
+from store import app, db, login_manager
+from store.models import User
+from store.forms import CreateUserForm, LoginUserForm, UpdateEmailForm, UpdatePasswordForm
+
 
 
 # App routes
 @app.route('/')
 @app.route('/home', methods=['GET'])
 def home():
-    return render_template('home.html')
-
-
-@app.route('/account', methods=['GET'])
-@login_required
-def account():
-    return render_template('account.html')
+    return render_template('home.html', title='Product Gallery')
 
 
 @app.route('/basket', methods=['GET'])
@@ -30,18 +24,16 @@ def checkout():
     return render_template('checkout.html')
 
 
+@app.route('/checkout', methods=['GET'])
+@login_required
+def checkout():
+    return render_template('checkout.html', title='Checkout')
+
+
 @app.route('/product/<int:product_id>', methods=['GET'])
 def product(product_id):
-    return render_template('product.html', product_id=product_id)
+    return render_template('product.html', product_id=product_id, title='Product Name here')
 
-
-# Admin views
-admin.add_view(ModelView(User, db.session))
-admin.add_view(ModelView(Billing, db.session))
-admin.add_view(ModelView(Address, db.session))
-admin.add_view(ModelView(OrderProducts, db.session))
-admin.add_view(ModelView(Orders, db.session))
-admin.add_view(ModelView(Products, db.session))
 
 
 # Account system routes
@@ -53,7 +45,7 @@ def unauthorized():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    form = LoginForm()
+    form = LoginUserForm()
 
     if current_user.is_authenticated:
         flash('You are already logged in!')
@@ -76,9 +68,9 @@ def login():
     return render_template('login.html', title='Login', form=form)
 
 
-@app.route('/create',methods=['GET','POST'])
+@app.route('/create', methods=['GET','POST'])
 def create():
-    form = CreateForm()
+    form = CreateUserForm()
 
     if current_user.is_authenticated:
         flash('You cannot complete this action whilst logged in!')
@@ -94,11 +86,20 @@ def create():
         db.session.add(new_user)
         db.session.commit()
 
-        flash('Account created')
+        flash('Account has been created. You can now login.')
 
-        return redirect(url_for('home'))
+        return redirect(url_for('login'))
 
     return render_template('create.html', title='Create Account', form=form)
+
+
+@app.route('/account', methods=['GET'])
+@login_required
+def account():
+    email_form = UpdateEmailForm(prefix="updemail")
+    password_form = UpdatePasswordForm(prefix="updpass")
+
+    return render_template('account.html', title='Account', update_email=email_form, update_password=password_form)
 
 
 @app.route('/logout')
@@ -115,4 +116,4 @@ def logout():
 # Error routes
 @app.errorhandler(404)
 def not_found(msg):
-    return make_response(render_template('error_404.html', msg=msg), 404)
+    return make_response(render_template('error_404.html', msg=msg, title='404 Not Found'), 404)

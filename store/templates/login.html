@@ -1,16 +1,18 @@
 {% extends "base.html" %}
 
-{% block title %}
-	Login
-{% endblock title %}
+{% block title %}{{ title }}{% endblock title %}
 
 {% block content %}
 	<section class="form">
 		<h1>Login</h1>
-		<form method="POST" action="">
+		<form method="POST" name="login" action="{{ url_for('login') }}">
 		  	{{ form.csrf_token }}
-		  	{{ form.email.label }} {{ form.email }}
-		  	{{ form.password.label }} {{ form.password }}
+
+		  	{{ form.email.label }}
+			{{ form.email }}
+
+		  	{{ form.password.label }}
+			{{ form.password }}
 			<input type="submit" value="Login">
 			<span>Don't have an account? <a href="{{ url_for('create') }}">Create one!</a></span>
 		</form>
