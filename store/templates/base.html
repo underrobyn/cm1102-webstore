@@ -21,17 +21,35 @@
 				<input type="search" id="site_search" name="site_search" placeholder="Search Products..." maxlength="150" />
 			</div>
 			<div id="actions">
-				<a href="{{ url_for('home') }}">
+				<a href="{{ url_for('home') }}" title="Homepage">
 					<i class="fas fa-home"></i>
 				</a>
-				<a href="{{ url_for('account') }}">
+				{% if current_user.is_authenticated %}
+				<a href="{{ url_for('account') }}" title="Your Account">
 					<i class="fas fa-user-circle"></i>
 				</a>
-				<a href="{{ url_for('basket') }}">
+				{% else %}
+				<a href="{{ url_for('login') }}" title="Login">
+					<i class="fas fa-sign-in-alt"></i>
+				</a>
+				{% endif %}
+				<a href="{{ url_for('basket') }}" title="Shopping Basket">
 					<i class="fas fa-shopping-basket"></i>
 				</a>
 			</div>
 		</nav>
+
+		{% with messages = get_flashed_messages() %}
+		  	{% if messages %}
+			<div id="alerts" class="neutral">
+				<ul>
+				{% for message in messages %}
+					<li>{{ message }}</li>
+				{% endfor %}
+				</ul>
+			</div>
+		  	{% endif %}
+		{% endwith %}
 		
 		<main>
 		{% block content %}
