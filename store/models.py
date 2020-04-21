@@ -3,6 +3,7 @@ from store import db, login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
+
 # DB Type information: https://docs.sqlalchemy.org/en/13/core/type_basics.html#generic-types
 # Login system information: https://flask-login.readthedocs.io/en/latest/
 class User(UserMixin, db.Model):
@@ -15,6 +16,8 @@ class User(UserMixin, db.Model):
 	password_hash = db.Column(db.String(128))
 	password = db.Column(db.String(60), nullable=False)
 	email = db.Column(db.String(256), nullable=False)
+	#active = db.Column(db.Integer(1), nullable=False)
+	#permission_level = db.Column(db.Integer(1), nullable=False)
 
 	@property
 	def password(self):
@@ -27,9 +30,16 @@ class User(UserMixin, db.Model):
 	def verify_password(self,password):
 		return check_password_hash(self.password_hash,password)
 
+	def get_id(self):
+		return self.id
+
+	def __unicode__(self):
+		return self.name
+
 @login_manager.user_loader
 def load_user(user_id):
 	return User.query.get(int(user_id))
+
 
 # Each user can have more than one billing card tied to their user
 class Billing(db.Model):
@@ -39,6 +49,7 @@ class Billing(db.Model):
 	card_cvc = db.Column(db.String(8), nullable=False)
 	card_end = db.Column(db.String(16), nullable=False)
 
+
 class Address(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	billing_id = db.Column(db.Integer, db.ForeignKey('billing.id'), nullable=False)
@@ -47,6 +58,7 @@ class Address(db.Model):
 	street = db.Column(db.Text, nullable=False)
 	city = db.Column(db.String(25), nullable=False)
 
+
 class Products(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	time_added = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -54,12 +66,14 @@ class Products(db.Model):
 	image = db.Column(db.String(30), nullable=False)
 	description = db.Column(db.Text, nullable=False)
 
+
 # Create many-one-many relationship between Products and Orders
 class OrderProducts(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), nullable=False)
 	product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
 	quantity = db.Column(db.Integer, nullable=False)
+
 
 class Orders(db.Model):
 	id = db.Column(db.Integer, primary_key=True)

@@ -8,7 +8,7 @@
 	<section>
 		<h1>Account</h1>
 		{% if current_user.is_authenticated %}
-		{{ current_user.username }}
+		{{ current_user.name }}
 		<a href="{{ url_for('logout') }}">Logout</a>&nbsp|
 		{% else %}
 		You are not logged in.
