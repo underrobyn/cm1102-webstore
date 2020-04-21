@@ -11,8 +11,7 @@
 		{{ current_user.username }}
 		<a href="{{ url_for('logout') }}">Logout</a>&nbsp|
 		{% else %}
-		Hello, Guest! &nbsp| <a href="{{ url_for('login') }}">Login&nbsp;</a>
-		or <a href="{{ url_for('create') }}">Register</a>&nbsp|
+		You are not logged in.
 		{% endif %}
 	</section>
 {% endblock content %}
