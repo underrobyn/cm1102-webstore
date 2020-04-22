@@ -72,7 +72,9 @@ def create():
         new_user = User(
             name=form.name.data,
             email=form.email.data,
-            password=form.password.data
+            password=form.password.data,
+            active=1,
+            permission_level=1
         )
 
         db.session.add(new_user)
