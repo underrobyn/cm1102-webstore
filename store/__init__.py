@@ -8,6 +8,7 @@ from flask_admin import Admin
 app = Flask(__name__)
 app.config['SECRET_KEY'] = c.secret_key
 app.config['SQLALCHEMY_DATABASE_URI'] = c.db_uri
+app.config['SQLALCHEMY_POOL_RECYCLE'] = 90
 
 
 @app.context_processor
@@ -20,7 +21,7 @@ db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-admin = Admin(app, name='ToBeNamedAdmin', template_mode='bootstrap3')
+admin = Admin(app, name='ToBeNamedAdmin', base_template='admin_templates/layout.html', template_mode='bootstrap3')
 
 from store import routes
 from store import views
