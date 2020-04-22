@@ -19,8 +19,13 @@ class AdminView(ModelView):
         return redirect(url_for('login', next=request.url))
 
 
+class UsersView(AdminView):
+    column_exclude_list = ['password_hash', ]
+    column_searchable_list = ['name', 'email']
+
+
 # Admin views
-admin.add_view(AdminView(User, db.session))
+admin.add_view(UsersView(User, db.session))
 admin.add_view(AdminView(Billing, db.session))
 admin.add_view(AdminView(Address, db.session))
 admin.add_view(AdminView(OrderProducts, db.session))

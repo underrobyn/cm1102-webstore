@@ -5,7 +5,6 @@ from store.models import User
 from store.forms import CreateUserForm, LoginUserForm, UpdateEmailForm, UpdatePasswordForm
 
 
-
 # App routes
 @app.route('/')
 @app.route('/home', methods=['GET'])
@@ -27,7 +26,6 @@ def checkout():
 @app.route('/product/<int:product_id>', methods=['GET'])
 def product(product_id):
     return render_template('product.html', product_id=product_id, title='Product Name here')
-
 
 
 # Account system routes
@@ -62,7 +60,7 @@ def login():
     return render_template('login.html', title='Login', form=form)
 
 
-@app.route('/create', methods=['GET','POST'])
+@app.route('/create', methods=['GET', 'POST'])
 def create():
     form = CreateUserForm()
 
