@@ -16,8 +16,8 @@ class User(UserMixin, db.Model):
 	password_hash = db.Column(db.String(128))
 	password = db.Column(db.String(60), nullable=False)
 	email = db.Column(db.String(256), nullable=False)
-	#active = db.Column(db.Integer(1), nullable=False)
-	#permission_level = db.Column(db.Integer(1), nullable=False)
+	active = db.Column(db.Integer, nullable=False)
+	permission_level = db.Column(db.Integer, nullable=False)
 
 	@property
 	def password(self):
@@ -63,6 +63,7 @@ class Products(db.Model):
 	name = db.Column(db.String(100), nullable=False)
 	image = db.Column(db.String(30), nullable=False)
 	description = db.Column(db.Text, nullable=False)
+	price = db.Column(db.Integer, nullable=False)
 
 
 # Create many-one-many relationship between Products and Orders
