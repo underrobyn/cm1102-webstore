@@ -1,0 +1,12 @@
+{% extends 'admin/master.html' %}
+
+{% block body %}
+    {{ super() }}
+
+    <section class="center">
+        <h1>{{ store_name }} - Admin panel</h1>
+
+        <a class="button" href="{{ url_for('home') }}">Home</a>
+        <a class="button" href="{{ url_for('logout') }}">Logout</a>
+    </section>
+{% endblock %}

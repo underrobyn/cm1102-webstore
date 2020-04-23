@@ -1,20 +1,37 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Regexp
+from store.config import password_req
+import re
 
 
 class CreateUserForm(FlaskForm):
-	name = StringField('Name', validators=[DataRequired(), Length(min=1,max=50)])
+	name = StringField('Name', validators=[DataRequired(), Length(min=1, max=50)])
 	email = StringField('Email', validators=[DataRequired(), Email()])
-	password = PasswordField('Password', validators=[DataRequired(), Length(min=6, max=256)])
+	password = PasswordField('Password', validators=[DataRequired(), Length(min=password_req["min"], max=password_req["max"])])
 	confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
 	submit = SubmitField('Create Account')
 
 
 class LoginUserForm(FlaskForm):
 	email = StringField('Email', validators=[DataRequired(), Email()])
-	password = PasswordField('Password', validators=[DataRequired(), Length(min=6, max=256)])
+	password = PasswordField('Password', validators=[DataRequired(), Length(min=password_req["min"], max=password_req["max"])])
 	submit = SubmitField('Login')
+
+
+def postcode_validate(form, field):
+	postcode_re = re.compile(r'\b[A-Z]{1,2}[0-9][A-Z0-9]? [0-9][ABD-HJLNP-UW-Z]{2}\b')
+	if postcode_re.match(field.data):
+		return True
+	return False
+
+
+class AddAddressForm(FlaskForm):
+	postcode = StringField('PostCode', validators=[DataRequired(), postcode_validate])
+	houseid = StringField('(House / Building / Flat) Number', validators=[DataRequired()])
+	street = StringField('Street', validators=[DataRequired()])
+	city = StringField('City / Town', validators=[DataRequired()])
+	submit = SubmitField('Add Address')
 
 
 class UpdateEmailForm(FlaskForm):
@@ -24,6 +41,6 @@ class UpdateEmailForm(FlaskForm):
 
 
 class UpdatePasswordForm(FlaskForm):
-	current_password = PasswordField('Current Password', validators=[DataRequired(), Length(min=6, max=256)])
-	new_password = PasswordField('New Password', validators=[DataRequired(), Length(min=6, max=256)])
+	current_password = PasswordField('Current Password', validators=[DataRequired(), Length(min=password_req["min"], max=password_req["max"])])
+	new_password = PasswordField('New Password', validators=[DataRequired(), Length(min=password_req["min"], max=password_req["max"])])
 	confirm_new_password = PasswordField('Confirm New Password', validators=[DataRequired(), EqualTo('new_password')])

@@ -1,0 +1,36 @@
+{% extends 'admin/model/list.html' %}
+{% import 'admin/model/layout.html' as model_layout with context %}
+
+{% block brand %}
+	<section>
+		<h1 class="center">{{ admin_view.name|capitalize }} Table</h1>
+
+		<div id="table_controls">
+			{% if admin_view.can_create %}
+			<div class="btn-group">
+				<a href="{{ url_for('.create_view', url=return_url) }}" class="button">{{ _gettext('Create') }}</a>
+			</div>
+			{% endif %}
+
+			{% if filter_groups %}
+			<div class="btn-group btn-menu">
+				{{ model_layout.filter_options(btn_class='dropdown-toggle button') }}
+			</div>
+			{% endif %}
+
+			{% if actions %}
+			<div class="btn-group btn-menu">
+				{{ actionlib.dropdown(actions) }}
+			</div>
+			{% endif %}
+
+			{% if search_supported %}
+			<div class="btn-menu">
+				{{ model_layout.search_form(input_class='search-form') }}
+			</div>
+			{% endif %}
+		</div>
+	</section>
+{% endblock %}
+
+{% block model_menu_bar %}{% endblock %}

@@ -27,8 +27,8 @@ class User(UserMixin, db.Model):
 	def password(self, password):
 		self.password_hash = generate_password_hash(password, method='pbkdf2:sha256', salt_length=16)
 
-	def verify_password(self,password):
-		return check_password_hash(self.password_hash,password)
+	def verify_password(self, password):
+		return check_password_hash(self.password_hash, password)
 
 	def __unicode__(self):
 		return self.name
@@ -48,11 +48,16 @@ class Billing(db.Model):
 	card_end = db.Column(db.String(16), nullable=False)
 
 
-class Address(db.Model):
+class BillingAddress(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	billing_id = db.Column(db.Integer, db.ForeignKey('billing.id'), nullable=False)
+	address_id = db.Column(db.Integer, db.ForeignKey('address.id'), nullable=False)
+
+
+class Address(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
 	postcode = db.Column(db.String(8), nullable=False)
-	number = db.Column(db.String(4), nullable=False)
+	houseid = db.Column(db.Text, nullable=False)
 	street = db.Column(db.Text, nullable=False)
 	city = db.Column(db.String(25), nullable=False)
 
@@ -80,7 +85,7 @@ class Orders(db.Model):
 
 
 class Basket(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
-    quantity = db.Column(db.Integer, nullable=False)
+	id = db.Column(db.Integer, primary_key=True)
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+	product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
+	quantity = db.Column(db.Integer, nullable=False)
