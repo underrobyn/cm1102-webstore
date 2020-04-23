@@ -5,5 +5,9 @@
 {% block content %}
 	<section>
 		<h1>Basket</h1>
+		{% for product in products %}
+			<p>"{{ product.name }}"</p>
+			<p>{{ product.description }}</p>
+		{% endfor %}
 	</section>
 {% endblock content %}
