@@ -14,7 +14,7 @@ nav ul {
 nav ul li {
 	float: left;
 	display: block;
-	font-size: 1.5em;
+	font-size: 2rem;
 	text-align: center;
 	color: #1a1a1a;
 	transition: 0.2s ease-in-out color, 0.2s ease-in-out background-color;
@@ -89,4 +89,10 @@ a.button {
 	color: #fff;
 	border: 0.1rem solid transparent;
 	border-radius: 0;
+}
+
+@media screen and (max-width: 1080px) {
+	nav ul li {
+		font-size: 1.5rem;
+	}
 }

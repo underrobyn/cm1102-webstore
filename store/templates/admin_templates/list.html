@@ -1,10 +1,9 @@
 {% extends 'admin/model/list.html' %}
 {% import 'admin/model/layout.html' as model_layout with context %}
-{% import 'admin/actions.html' as actionlib with context %}
 
 {% block brand %}
 	<section>
-		<h1>{{ admin_view.name|capitalize }} Table</h1>
+		<h1 class="center">{{ admin_view.name|capitalize }} Table</h1>
 
 		<div id="table_controls">
 			{% if admin_view.can_create %}

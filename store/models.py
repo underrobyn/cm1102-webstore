@@ -48,11 +48,16 @@ class Billing(db.Model):
 	card_end = db.Column(db.String(16), nullable=False)
 
 
-class Address(db.Model):
+class BillingAddress(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	billing_id = db.Column(db.Integer, db.ForeignKey('billing.id'), nullable=False)
+	address_id = db.Column(db.Integer, db.ForeignKey('address.id'), nullable=False)
+
+
+class Address(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
 	postcode = db.Column(db.String(8), nullable=False)
-	number = db.Column(db.String(4), nullable=False)
+	houseid = db.Column(db.Text, nullable=False)
 	street = db.Column(db.Text, nullable=False)
 	city = db.Column(db.String(25), nullable=False)
 
