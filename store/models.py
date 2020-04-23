@@ -27,8 +27,8 @@ class User(UserMixin, db.Model):
 	def password(self, password):
 		self.password_hash = generate_password_hash(password, method='pbkdf2:sha256', salt_length=16)
 
-	def verify_password(self,password):
-		return check_password_hash(self.password_hash,password)
+	def verify_password(self, password):
+		return check_password_hash(self.password_hash, password)
 
 	def __unicode__(self):
 		return self.name
@@ -85,7 +85,7 @@ class Orders(db.Model):
 
 
 class Basket(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
-    quantity = db.Column(db.Integer, nullable=False)
+	id = db.Column(db.Integer, primary_key=True)
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+	product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
+	quantity = db.Column(db.Integer, nullable=False)
