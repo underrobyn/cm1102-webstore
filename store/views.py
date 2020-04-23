@@ -31,6 +31,11 @@ class UsersView(AdminView):
 	column_searchable_list = ['name', 'email']
 
 
+class UsersView(AdminView):
+    column_exclude_list = ['password_hash', ]
+    column_searchable_list = ['name', 'email']
+
+
 # Admin views
 admin.add_view(UsersView(User, db.session))  # , category="User Data"
 admin.add_view(AdminView(Billing, db.session))

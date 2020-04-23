@@ -82,3 +82,10 @@ class OrderProducts(db.Model):
 class Orders(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	address_id = db.Column(db.Integer, db.ForeignKey('billing.id'), nullable=False)
+
+
+class Basket(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)

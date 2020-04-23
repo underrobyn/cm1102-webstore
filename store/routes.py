@@ -1,7 +1,10 @@
 from flask import render_template, url_for, request, redirect, flash, make_response
 from flask_login import login_user, logout_user, current_user, login_required
+from sqlalchemy import create_engine
+
 from store import app, db, login_manager
-from store.models import User
+import flask_sqlalchemy
+from store.models import User, Products
 from store.forms import CreateUserForm, LoginUserForm, UpdateEmailForm, UpdatePasswordForm
 
 
@@ -14,7 +17,8 @@ def home():
 
 @app.route('/basket', methods=['GET'])
 def basket():
-    return render_template('basket.html')
+    products = Products.query.all()
+    return render_template('basket.html', products=products)
 
 
 @app.route('/checkout', methods=['GET'])
@@ -114,6 +118,7 @@ def logout():
         flash('You have been logged out!')
 
     return redirect(url_for('login'))
+
 
 
 # Error routes
