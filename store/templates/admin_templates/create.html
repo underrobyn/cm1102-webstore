@@ -1,0 +1,11 @@
+{% extends 'admin/model/create.html' %}
+
+{% block body %}
+	<section class="form">
+		<h1>Create {{ admin_view.name|capitalize }}</h1>
+		{% call lib.form_tag(form) %}
+			{{ lib.render_form_fields(form, form_opts=form_opts) }}
+			{{ lib.render_form_buttons(return_url, extra()) }}
+		{% endcall %}
+	</section>
+{% endblock %}

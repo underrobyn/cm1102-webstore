@@ -1,0 +1,28 @@
+{% import 'admin/layout.html' as layout with context -%}
+{% extends 'admin/base.html' %}
+
+{% block head_css %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/admin.css') }}" />
+
+	<!-- Webfont -->
+	<!-- Use CDN: https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/solid.min.js -->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/solid.min.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/fontawesome.min.css') }}" />
+{% endblock %}
+
+{% block page_body %}
+	<nav role="navigation">
+		<ul>
+			{{ layout.menu() }}
+			{{ layout.menu_links() }}
+		</ul>
+	</nav>
+
+	<main id="admin">
+		{% block brand %}{% endblock %}
+		{{ layout.messages() }}
+		{% set render_ctx = h.resolve_ctx() %}
+		{% block body %}{% endblock %}
+	</main>
+{% endblock %}
