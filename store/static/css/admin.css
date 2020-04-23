@@ -34,7 +34,12 @@ table {
 }
 
 table tr {
+	height:3rem;
 	border-bottom:0.1rem solid #000;
+}
+
+table tbody tr:nth-child(2n) {
+	background-color:#eee;
 }
 
 .table-responsive {

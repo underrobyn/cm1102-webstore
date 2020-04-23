@@ -1,5 +1,6 @@
 {% extends 'admin/model/list.html' %}
 {% import 'admin/model/layout.html' as model_layout with context %}
+{% import 'admin/actions.html' as actionlib with context %}
 
 {% block brand %}
 	<section>
@@ -20,7 +21,7 @@
 
 			{% if actions %}
 			<div class="btn-group btn-menu">
-				{{ actionlib.dropdown(actions, btn_class='dropdown-toggle button') }}
+				{{ actionlib.dropdown(actions) }}
 			</div>
 			{% endif %}
 

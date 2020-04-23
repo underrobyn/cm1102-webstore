@@ -39,5 +39,6 @@
 		</fieldset>
 
 		<h3>Not, {{ current_user.name }}? <a href="{{ url_for('logout') }}">Logout.</a></h3>
+		<h3>Looking to update billing information? <a href="{{ url_for('billing') }}">See here.</a></h3>
 	</section>
 {% endblock content %}

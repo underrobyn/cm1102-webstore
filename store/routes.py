@@ -96,6 +96,15 @@ def account():
     return render_template('account.html', title='Account', update_email=email_form, update_password=password_form)
 
 
+@app.route('/billing', methods=['GET'])
+@login_required
+def billing():
+    #email_form = UpdateEmailForm(prefix="updemail")
+    #password_form = UpdatePasswordForm(prefix="updpass")
+
+    return render_template('billing.html', title='Billing Information')
+
+
 @app.route('/logout')
 def logout():
     if not current_user.is_authenticated:

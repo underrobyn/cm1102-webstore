@@ -1,0 +1,9 @@
+
+{% macro dropdown(actions) -%}
+	<fieldset>
+		<legend>{{ _gettext('With selected') }}</legend>
+		{% for p in actions %}
+		<a href="javascript:void(0)" class="button" onclick="return modelActions.execute('{{ p[0] }}');">{{ _gettext(p[1]) }}</a>
+		{% endfor %}
+	</fieldset>
+{% endmacro %}

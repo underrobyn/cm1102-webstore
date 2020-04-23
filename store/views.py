@@ -24,6 +24,9 @@ class AdminView(ModelView):
 
 
 class UsersView(AdminView):
+	# Don't allow accounts to be created through admin panel
+	can_create = False
+
 	column_exclude_list = ['password_hash', ]
 	column_searchable_list = ['name', 'email']
 
