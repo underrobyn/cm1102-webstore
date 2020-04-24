@@ -5,9 +5,26 @@
 {% block content %}
 	<section>
 		<h1>Basket</h1>
+		<h1>Reading Product Database</h1>
 		{% for product in products %}
-			<p>"{{ product.name }}"</p>
+			<p>{{ product.name }}</p>
 			<p>{{ product.description }}</p>
 		{% endfor %}
+		<h1>Current Shoppping cart</h1>
+		{% for item in cart%}
+			{%for product in products %}
+				{% if item.user_id == current_user.id %}
+					{% if item.product_id == product.id %}
+						<p>Item: {{ product.name }}</p>
+						<p>Quantity: {{ item.quantity }}</p>
+					{% endif %}
+				{% endif %}
+			{% endfor %}
+		{% endfor %}
+
+
+
+
+
 	</section>
 {% endblock content %}
