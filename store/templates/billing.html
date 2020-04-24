@@ -3,9 +3,51 @@
 {% block title %}{{ title }}{% endblock title %}
 
 {% block content %}
-<section class="form">
-	<h1>Billing Information</h1>
+	<section class="main padding">
+		<h1>Billing</h1>
+		{% if address|length > 0 %}
+			<fieldset>
+				<legend>Address List</legend>
+				<h3>Addresses on file: {{ address|length }}</h3>
+				{% for address in address_list %}
+					<ul>
+						<li>"{{ address.city }}"</li>
+						<li>"{{ address.postcode }}"</li>
+						<li>{{ address.street }} {{ address.houseid }}</li>
+						<li><a href="{{ url_for('billing', remove=address.id) }}">Delete Address</a></li>
+					</ul>
+				{% endfor %}
+			</fieldset>
+		{% else %}
+			<h3>Add your first address below!</h3>
+		{% endif %}
+		<fieldset>
+			<legend>Add Address</legend>
+			<form method="POST" action="{{ url_for('billing') }}">
+				{{ add_address.csrf_token }}
 
+				{{ add_address.postcode.label }}
+				{{ add_address.postcode }}
 
-</section>
+				{{ add_address.houseid.label }}
+				{{ add_address.houseid }}
+
+				{{ add_address.street.label }}
+				{{ add_address.street }}
+
+				{{ add_address.city.label }}
+				{{ add_address.city }}
+
+				<input type="submit" value="Add New Address">
+			</form>
+		</fieldset>
+	</section>
+
+	<section class="sidebar center">
+		<h1>Options</h1>
+		<br /><br />
+		<a href="{{ url_for('account') }}" class="button">Account Information</a>
+		<br /><br />
+		<a href="{{ url_for('logout') }}" class="button">Logout</a>
+	</section>
 {% endblock content %}

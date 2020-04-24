@@ -4,8 +4,8 @@ from sqlalchemy import create_engine
 
 from store import app, db, login_manager
 import flask_sqlalchemy
-from store.models import User, Products
-from store.forms import CreateUserForm, LoginUserForm, UpdateEmailForm, UpdatePasswordForm
+from store.models import User, Products, Address
+from store.forms import CreateUserForm, LoginUserForm, UpdateEmailForm, UpdatePasswordForm, AddAddressForm
 
 
 # App routes
@@ -97,16 +97,36 @@ def account():
     email_form = UpdateEmailForm(prefix="updemail")
     password_form = UpdatePasswordForm(prefix="updpass")
 
+    if email_form.validate_on_submit():
+        print(email_form)
+
+    if password_form.validate_on_submit():
+        print(password_form)
+
     return render_template('account.html', title='Account', update_email=email_form, update_password=password_form)
 
 
-@app.route('/billing', methods=['GET'])
+@app.route('/billing', methods=['GET', 'POST'])
 @login_required
 def billing():
-    #email_form = UpdateEmailForm(prefix="updemail")
-    #password_form = UpdatePasswordForm(prefix="updpass")
+    addresses = Address.query.all()
+    address_form = AddAddressForm(prefix="addaddr")
 
-    return render_template('billing.html', title='Billing Information')
+    if address_form.validate_on_submit():
+        new_address = Address(
+            user_id=current_user.id,
+            postcode=address_form.postcode.data,
+            houseid=address_form.houseid.data,
+            street=address_form.street.data,
+            city=address_form.city.data
+        )
+
+        db.session.add(new_address)
+        db.session.commit()
+
+        flash('Address has been added to your account.')
+
+    return render_template('billing.html', title='Billing Information', add_address=address_form, address_list=addresses)
 
 
 @app.route('/logout')
@@ -118,7 +138,6 @@ def logout():
         flash('You have been logged out!')
 
     return redirect(url_for('login'))
-
 
 
 # Error routes
