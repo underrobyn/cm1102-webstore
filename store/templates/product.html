@@ -9,12 +9,14 @@
 	<hr>
 	<section class="form">
 		<form method="POST" action="{{ url_for('AddCart') }}">
+			{{ add_cart.csrf_token }}
+
 		  	<input type="hidden" name="product_id" value="{{ product_id }}">
-			<label for="amount">Quantity: </label>
-			<input type="number" name="amount">
-			<button type="submit" class="button">Add Cart</button>
 
+			{{ add_cart.quantity.label }}
+			{{ add_cart.quantity }}
+
+			<input type="submit" value="Add to cart" />
 		</form>
-
 	</section>
 {% endblock content %}
