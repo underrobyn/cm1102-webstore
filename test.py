@@ -29,6 +29,12 @@ def build_sample_db():
 			permission_level=1
 		)
 		db.session.add(new_user)
+		db.session.flush()
+		
+		new_basket = Basket(
+			user_id = new_user.id
+		)
+		db.session.add(new_basket)
 		print("Added: " + fn + " " + ln)
 	
 	db.session.commit()

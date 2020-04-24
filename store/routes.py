@@ -30,8 +30,10 @@ def AddCart():
                 flash("Item does not exist")
                 return redirect(request.referrer)
 
+            basket = Basket.query.filter_by(user_id=current_user.id).first()
+
             if quantity and quantity > 0:
-                basket_item = BasketItems(basket_id=current_user.id, product_id=product_id, quantity=quantity)
+                basket_item = BasketItems(basket_id=basket.id, product_id=product_id, quantity=quantity)
                 db.session.add(basket_item)
                 db.session.commit()
 
