@@ -71,7 +71,7 @@ def product(product_id):
 @login_manager.unauthorized_handler
 def unauthorized():
     flash('You must be logged in to view this page')
-    return redirect(url_for('account'))
+    return redirect(url_for('login'))
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -151,15 +151,29 @@ def account():
 @app.route('/billing', methods=['GET', 'POST'])
 @login_required
 def billing():
+    # Check if the user wishes to remove an address
     if request.args.get('remove'):
         remove_id = request.args.get('remove')
         address_data = Address.query.filter_by(id=remove_id).first()
+
+        # Chekc the address exists
         if not address_data:
-            return forbidden("You attempted to remove an address that does not exist")
+            flash("You cannot delete that address.")
+            return redirect(url_for("billing"))
 
-    addresses = Address.query.filter_by(user_id=current_user.id).all()
+        # Check that this address belongs to the logged in user
+        if address_data.user_id != current_user.id:
+            flash("You cannot delete that address.")
+            return redirect(url_for("billing"))
+
+        db.session.delete(address_data)
+        db.session.commit()
+
+        flash("Removed address")
+        return redirect(url_for("billing"))
+
+    # Check if we need to add an address
     address_form = AddAddressForm(prefix="addaddr")
-
     if address_form.validate_on_submit():
         new_address = Address(
             user_id=current_user.id,
@@ -173,6 +187,10 @@ def billing():
         db.session.commit()
 
         flash('Address has been added to your account.')
+        redirect(url_for("billing"))
+
+    # Get a list of this users addresses
+    addresses = Address.query.filter_by(user_id=current_user.id).all()
 
     return render_template('billing.html', title='Billing Information', add_address=address_form, address_list=addresses)
 
