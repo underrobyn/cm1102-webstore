@@ -1,11 +1,11 @@
-from flask import render_template, url_for, request, redirect, flash, make_response
+from flask import render_template, url_for, request, redirect, flash, make_response, session
 from flask_login import login_user, logout_user, current_user, login_required
 from sqlalchemy import create_engine
 
 from store import app, db, login_manager
 import flask_sqlalchemy
-from store.models import User, Products, Address, Basket
-from store.forms import CreateUserForm, LoginUserForm, UpdateEmailForm, UpdatePasswordForm, AddAddressForm
+from store.models import User, Products, Basket, BasketItems
+from store.forms import CreateUserForm, LoginUserForm, UpdateEmailForm, UpdatePasswordForm, AddToCart
 
 
 # App routes
@@ -15,10 +15,45 @@ def home():
     return render_template('home.html', title='Product Gallery')
 
 
+@app.route('/addcart', methods=["POST"])
+def AddCart():
+    form = AddToCart()
+
+
+    try:
+        product_id = request.form.get("product_id")
+        amount = request.form.get('amount')
+        quantity = amount
+        product = Products.query.filter_by(id=product_id).first()
+        print(amount)
+        if product_id and amount and request.method== "POST":
+            DictCart = {product_id: {'name':product.name, 'price':product.price, 'quantity':amount}}
+
+            if 'ShopBasket' in session:
+                session['ShopBasket'] = DictCart
+                print(session['ShopBasket'])
+                id = 0
+                basket = BasketItems(basket_id=Basket.id , product_id=product_id,quantity=amount,id=current_user.id)
+                db.session.add(basket)
+                db.session.commit()
+
+
+            else:
+                session['ShopBasket'] = DictCart
+                return redirect(request.referrer)
+    except Exception as e:
+        print(e)
+    finally:
+        return redirect(request.referrer)
+
+
+
 @app.route('/basket', methods=['GET'])
 def basket():
+    addCart = AddToCart()
+    currentBasket = Basket.query.all()
     products = Products.query.all()
-    return render_template('basket.html', products=products)
+    return render_template('basket.html', cart=currentBasket, products=products, form=addCart,)
 
 
 @app.route('/checkout', methods=['GET'])
@@ -82,13 +117,6 @@ def create():
         )
 
         db.session.add(new_user)
-        db.session.flush()
-
-        new_basket = Basket(
-            user_id=new_user.id
-        )
-
-        db.session.add(new_basket)
         db.session.commit()
 
         flash('Account has been created. You can now login.')
@@ -104,42 +132,16 @@ def account():
     email_form = UpdateEmailForm(prefix="updemail")
     password_form = UpdatePasswordForm(prefix="updpass")
 
-    if email_form.validate_on_submit():
-        print(email_form)
-
-    if password_form.validate_on_submit():
-        print(password_form)
-
     return render_template('account.html', title='Account', update_email=email_form, update_password=password_form)
 
 
-@app.route('/billing', methods=['GET', 'POST'])
+@app.route('/billing', methods=['GET'])
 @login_required
 def billing():
-    if request.args.get('remove'):
-        remove_id = request.args.get('remove')
-        address_data = Address.query.filter_by(id=remove_id).first()
-        if not address_data:
-            return forbidden("You attempted to remove an address that does not exist")
+    #email_form = UpdateEmailForm(prefix="updemail")
+    #password_form = UpdatePasswordForm(prefix="updpass")
 
-    addresses = Address.query.filter_by(user_id=current_user.id).all()
-    address_form = AddAddressForm(prefix="addaddr")
-
-    if address_form.validate_on_submit():
-        new_address = Address(
-            user_id=current_user.id,
-            postcode=address_form.postcode.data,
-            houseid=address_form.houseid.data,
-            street=address_form.street.data,
-            city=address_form.city.data
-        )
-
-        db.session.add(new_address)
-        db.session.commit()
-
-        flash('Address has been added to your account.')
-
-    return render_template('billing.html', title='Billing Information', add_address=address_form, address_list=addresses)
+    return render_template('billing.html', title='Billing Information')
 
 
 @app.route('/logout')
@@ -153,12 +155,8 @@ def logout():
     return redirect(url_for('login'))
 
 
+
 # Error routes
-@app.errorhandler(403)
-def forbidden(msg):
-    return make_response(render_template('error_403.html', msg=msg, title='403 Forbidden'), 403)
-
-
 @app.errorhandler(404)
 def not_found(msg):
     return make_response(render_template('error_404.html', msg=msg, title='404 Not Found'), 404)
