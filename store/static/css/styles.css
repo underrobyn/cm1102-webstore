@@ -26,6 +26,26 @@ h3 {
 	text-align: center;
 }
 
+a.button {
+	display: inline-block;
+	width: auto;
+	height: 3rem;
+	padding: 0.25rem 0.5rem;
+	margin: 0;
+	font-size: 1.5rem;
+	font-weight: 900;
+	line-height: 3rem;
+	text-align: center;
+	white-space: nowrap;
+	cursor: pointer;
+	user-select: none;
+	background: #1c1c1c;
+	color: #fff;
+	border: 0.1rem solid transparent;
+	border-radius: 0;
+	text-decoration:none;
+}
+
 /* Styles for main site & admin navigation bars */
 nav {
 	display: inline-block;
@@ -179,9 +199,29 @@ form span {
 	margin: 2rem 0 0 0;
 }
 
-section.form {
+section {
+	display:block;
+	float:left;
+}
+
+section.center_form {
 	width: 50%;
 	margin: 1% 25%;
+}
+
+section.main {
+	width:70%;
+	margin:1% 0;
+}
+
+section.padding {
+	width:66%;
+	padding:0 2%;
+}
+
+section.sidebar {
+	width:30%;
+	margin:1% 0;
 }
 
 @media screen and (max-width: 1280px) {
