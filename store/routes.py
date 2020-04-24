@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 from store import app, db, login_manager
 import flask_sqlalchemy
 from store.models import User, Products, Address, Basket, BasketItems
-from store.forms import CreateUserForm, LoginUserForm, UpdateEmailForm, UpdatePasswordForm, AddToCart, AddAddressForm
+from store.forms import CreateUserForm, LoginUserForm, UpdateEmailForm, UpdatePasswordForm, AddToCart, AddAddressForm, DeleteAccountForm
 
 
 # App routes
@@ -133,11 +133,12 @@ def create():
     return render_template('create.html', title='Create Account', form=form)
 
 
-@app.route('/account', methods=['GET'])
+@app.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
     email_form = UpdateEmailForm(prefix="updemail")
     password_form = UpdatePasswordForm(prefix="updpass")
+    account_delete_form = DeleteAccountForm(prefix="delacc")
 
     if email_form.validate_on_submit():
         print(email_form)
@@ -145,7 +146,10 @@ def account():
     if password_form.validate_on_submit():
         print(password_form)
 
-    return render_template('account.html', title='Account', update_email=email_form, update_password=password_form)
+    if account_delete_form.validate_on_submit():
+        print(account_delete_form)
+
+    return render_template('account.html', title='Account', update_email=email_form, update_password=password_form, delete_account=account_delete_form)
 
 
 @app.route('/billing', methods=['GET', 'POST'])
