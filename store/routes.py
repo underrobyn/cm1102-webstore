@@ -31,8 +31,8 @@ def AddCart():
             if 'ShopBasket' in session:
                 session['ShopBasket'] = DictCart
                 print(session['ShopBasket'])
-                id = 0
-                basket = BasketItems(basket_id=Basket.id , product_id=product_id,quantity=amount,id=current_user.id)
+
+                basket = BasketItems(product_id=product_id,quantity=amount,basket_id=current_user.id)
                 db.session.add(basket)
                 db.session.commit()
 
@@ -49,7 +49,8 @@ def AddCart():
 @app.route('/basket', methods=['GET'])
 def basket():
     addCart = AddToCart()
-    currentBasket = Basket.query.all()
+    currentBasket = BasketItems.query.all()
+    print(currentBasket)
     products = Products.query.all()
     return render_template('basket.html', cart=currentBasket, products=products, form=addCart)
 

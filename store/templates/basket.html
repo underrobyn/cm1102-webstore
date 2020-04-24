@@ -13,7 +13,7 @@
 		<h1>Current Shoppping cart</h1>
 		{% for item in cart%}
 			{%for product in products %}
-				{% if item.user_id == current_user.id %}
+				{% if item.id == current_user.id %}
 					{% if item.product_id == product.id %}
 						<p>Item: {{ product.name }}</p>
 						<p>Quantity: {{ item.quantity }}</p>
