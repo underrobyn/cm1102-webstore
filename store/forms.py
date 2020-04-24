@@ -35,7 +35,7 @@ class AddAddressForm(FlaskForm):
 
 
 class UpdateEmailForm(FlaskForm):
-	email = StringField('Email', validators=[DataRequired(), Email()])
+	email = StringField('New Email', validators=[DataRequired(), Email()])
 	password = PasswordField('Current Password', validators=[DataRequired()])
 	submit = SubmitField('Update Email')
 
