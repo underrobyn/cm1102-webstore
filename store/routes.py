@@ -140,45 +140,58 @@ def account():
     password_form = UpdatePasswordForm(prefix="updpass")
     account_delete_form = DeleteAccountForm(prefix="delacc")
 
-    if email_form.validate_on_submit():
-        entered_email = email_form.email.data
-        entered_pass = email_form.password.data
+    # If this is a post request then we have a lot of work to do...
+    if request.method == "POST":
+        update_user = User.query.filter_by(id=current_user.id).first()
 
-        # Check if email already in use
-        results = User.query.filter_by(email=entered_email).all()
-        if len(results) > 0:
-            flash("This email is already in use by somebody else")
-            return redirect(url_for('account'))
+        if email_form.validate_on_submit():
+            entered_email = email_form.email.data
+            entered_pass = email_form.password.data
 
-        # Check password is correct
-        if not current_user.verify_password(entered_pass):
-            flash("Account password was incorrect.")
-            return redirect(url_for('account'))
+            # Check if email already in use
+            results = User.query.filter_by(email=entered_email).all()
+            if len(results) > 0:
+                flash("This email is already in use by somebody else")
+                return redirect(url_for('account'))
 
-        flash("Email was updated!")
+            # Check password is correct
+            if not current_user.verify_password(entered_pass):
+                flash("Account password was incorrect.")
+                return redirect(url_for('account'))
 
-    if password_form.validate_on_submit():
-        entered_pass = password_form.password.data
-        entered_newpass = password_form.new_password.data
+            update_user.email = entered_email
+            db.session.commit()
 
-        # Check password is correct
-        if not current_user.verify_password(entered_pass):
-            flash("Current password was incorrect.")
-            return redirect(url_for('account'))
+            flash("Email was updated!")
 
-        flash("Password was updated!" + entered_newpass)
+        if password_form.validate_on_submit():
+            entered_pass = password_form.password.data
+            entered_newpass = password_form.new_password.data
 
-    if account_delete_form.validate_on_submit():
-        entered_pass = account_delete_form.password.data
-        entered_consent = account_delete_form.confirm_delete.data
+            # Check password is correct
+            if not current_user.verify_password(entered_pass):
+                flash("Current password was incorrect.")
+                return redirect(url_for('account'))
 
-        # Check password is correct
-        if not current_user.verify_password(entered_pass):
-            flash("Account password was incorrect.")
-            return redirect(url_for('account'))
+            update_user.password = entered_newpass
+            db.session.commit()
 
-        print(entered_consent)
-        flash("Account was deleted! You will now be logged out.")
+            flash("Password was updated!")
+
+        if account_delete_form.validate_on_submit():
+            entered_pass = account_delete_form.password.data
+            entered_consent = account_delete_form.confirm_delete.data
+
+            # Check password is correct
+            if not current_user.verify_password(entered_pass):
+                flash("Account password was incorrect.")
+                return redirect(url_for('account'))
+
+            if not entered_consent:
+                flash("Please give consent for the account to be deleted")
+                return redirect(url_for('account'))
+
+            flash("Account was deleted! You will now be logged out.")
 
     return render_template('account.html', title='Account', update_email=email_form, update_password=password_form, delete_account=account_delete_form)
 
