@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 
 from store import app, db, login_manager
 import flask_sqlalchemy
-from store.models import User, Products, Address
+from store.models import User, Products, Address, Basket
 from store.forms import CreateUserForm, LoginUserForm, UpdateEmailForm, UpdatePasswordForm, AddAddressForm
 
 
@@ -82,6 +82,13 @@ def create():
         )
 
         db.session.add(new_user)
+        db.session.flush()
+
+        new_basket = Basket(
+            user_id=new_user.id
+        )
+
+        db.session.add(new_basket)
         db.session.commit()
 
         flash('Account has been created. You can now login.')
@@ -109,7 +116,13 @@ def account():
 @app.route('/billing', methods=['GET', 'POST'])
 @login_required
 def billing():
-    addresses = Address.query.all()
+    if request.args.get('remove'):
+        remove_id = request.args.get('remove')
+        address_data = Address.query.filter_by(id=remove_id).first()
+        if not address_data:
+            return forbidden("You attempted to remove an address that does not exist")
+
+    addresses = Address.query.filter_by(user_id=current_user.id).all()
     address_form = AddAddressForm(prefix="addaddr")
 
     if address_form.validate_on_submit():
@@ -141,6 +154,11 @@ def logout():
 
 
 # Error routes
+@app.errorhandler(403)
+def forbidden(msg):
+    return make_response(render_template('error_403.html', msg=msg, title='403 Forbidden'), 403)
+
+
 @app.errorhandler(404)
 def not_found(msg):
     return make_response(render_template('error_404.html', msg=msg, title='404 Not Found'), 404)
