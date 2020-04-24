@@ -27,8 +27,8 @@ class User(UserMixin, db.Model):
 	def password(self, password):
 		self.password_hash = generate_password_hash(password, method='pbkdf2:sha256', salt_length=16)
 
-	def verify_password(self,password):
-		return check_password_hash(self.password_hash,password)
+	def verify_password(self, password):
+		return check_password_hash(self.password_hash, password)
 
 	def __unicode__(self):
 		return self.name
@@ -42,7 +42,6 @@ def load_user(user_id):
 # Each user can have more than one billing card tied to their user
 class Billing(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
-	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 	card_number = db.Column(db.String(16), nullable=False)
 	card_cvc = db.Column(db.String(8), nullable=False)
 	card_end = db.Column(db.String(16), nullable=False)
@@ -56,6 +55,7 @@ class BillingAddress(db.Model):
 
 class Address(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 	postcode = db.Column(db.String(8), nullable=False)
 	houseid = db.Column(db.Text, nullable=False)
 	street = db.Column(db.Text, nullable=False)
@@ -81,11 +81,12 @@ class OrderProducts(db.Model):
 
 class Orders(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
-	address_id = db.Column(db.Integer, db.ForeignKey('billing.id'), nullable=False)
+	delivery_address_id = db.Column(db.Integer, db.ForeignKey('address.id'), nullable=False)
+	billing_id = db.Column(db.Integer, db.ForeignKey('billing.id'), nullable=False)
 
 
 class Basket(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
-    quantity = db.Column(db.Integer, nullable=False)
+	id = db.Column(db.Integer, primary_key=True)
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+	product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
+	quantity = db.Column(db.Integer, nullable=False)
