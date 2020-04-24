@@ -32,10 +32,9 @@ def build_sample_db():
 		db.session.flush()
 		
 		new_basket = Basket(
-			user_id=new_user.id
+			user_id = new_user.id
 		)
 		db.session.add(new_basket)
-		
 		print("Added: " + fn + " " + ln)
 	
 	db.session.commit()

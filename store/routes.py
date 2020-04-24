@@ -16,40 +16,41 @@ def home():
 
 
 @app.route('/addcart', methods=["POST"])
+@login_required
 def AddCart():
     form = AddToCart()
 
-    try:
+    if form.validate_on_submit():
         product_id = request.form.get("product_id")
-        amount = request.form.get('amount')
-        quantity = amount
-        product = Products.query.filter_by(id=product_id).first()
-        print(amount)
-        if product_id and amount and request.method== "POST":
-            DictCart = {product_id: {'name':product.name, 'price':product.price, 'quantity':amount}}
+        quantity = int(form.quantity.data)
 
-            if 'ShopBasket' in session:
-                session['ShopBasket'] = DictCart
-                print(session['ShopBasket'])
-                id = 0
-                basket = BasketItems(basket_id=Basket.id , product_id=product_id,quantity=amount,id=current_user.id)
-                db.session.add(basket)
+        try:
+            product = Products.query.filter_by(id=product_id).first()
+            if not product or not product_id:
+                flash("Item does not exist")
+                return redirect(request.referrer)
+
+            basket = Basket.query.filter_by(user_id=current_user.id).first()
+
+            if quantity and quantity > 0:
+                basket_item = BasketItems(basket_id=basket.id, product_id=product_id, quantity=quantity)
+                db.session.add(basket_item)
                 db.session.commit()
 
+                flash("Item added to basket")
+                return redirect(url_for("basket"))
 
-            else:
-                session['ShopBasket'] = DictCart
-                return redirect(request.referrer)
-    except Exception as e:
-        print(e)
-    finally:
-        return redirect(request.referrer)
+        except Exception as e:
+            print(e)
+            flash("Item not added to basket")
+            return redirect(url_for("basket"))
 
 
 @app.route('/basket', methods=['GET'])
 def basket():
     addCart = AddToCart()
-    currentBasket = Basket.query.all()
+    currentBasket = BasketItems.query.filter_by(basket_id=current_user.id).all()
+    print(currentBasket)
     products = Products.query.all()
     return render_template('basket.html', cart=currentBasket, products=products, form=addCart)
 
@@ -62,7 +63,8 @@ def checkout():
 
 @app.route('/product/<int:product_id>', methods=['GET'])
 def product(product_id):
-    return render_template('product.html', product_id=product_id, title='Product Name here')
+    cart_form = AddToCart()
+    return render_template('product.html', product_id=product_id, add_cart=cart_form, title='Product Name here')
 
 
 # Account system routes
