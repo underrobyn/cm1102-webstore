@@ -5,10 +5,10 @@
 {% block content %}
 	<section class="main padding">
 		<h1>Billing</h1>
-		{% if address|length > 0 %}
+		{% if address_list|length > 0 %}
 			<fieldset>
 				<legend>Address List</legend>
-				<h3>Addresses on file: {{ address|length }}</h3>
+				<h3>Addresses on file: {{ address_list|length }}</h3>
 				{% for address in address_list %}
 					<ul>
 						<li>"{{ address.city }}"</li>
