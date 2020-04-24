@@ -9,14 +9,17 @@
 			<fieldset>
 				<legend>Address List</legend>
 				<h3>Addresses on file: {{ address_list|length }}</h3>
-				{% for address in address_list %}
-					<ul>
-						<li>"{{ address.city }}"</li>
-						<li>"{{ address.postcode }}"</li>
-						<li>{{ address.street }} {{ address.houseid }}</li>
-						<li><a href="{{ url_for('billing', remove=address.id) }}">Delete Address</a></li>
-					</ul>
-				{% endfor %}
+				<ul>
+					{% for address in address_list %}
+						<li>
+							<strong>Address</strong> <a href="{{ url_for('billing', remove=address.id) }}">(Delete)</a><br />
+							{{ address.city }}<br />
+							{{ address.postcode }}<br />
+							{{ address.houseid }} {{ address.street }}<br />
+							<br />
+						</li>
+					{% endfor %}
+				</ul>
 			</fieldset>
 		{% else %}
 			<h3>Add your first address below!</h3>
