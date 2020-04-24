@@ -3,7 +3,7 @@
 {% block title %}{{ title }}{% endblock title %}
 
 {% block content %}
-	<section class="form">
+	<section class="center_form">
 		<h1>Create</h1>
 		<form method="POST" name="create" action="{{ url_for('create') }}">
   			{{ form.csrf_token }}

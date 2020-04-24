@@ -3,13 +3,14 @@
 {% block title %}{{ title }}{% endblock title %}
 
 {% block content %}
-	<section class="form">
+	<section class="main padding">
 		<h1>Your Account</h1>
 		<fieldset>
 			<legend>Update Email</legend>
 			<form method="POST" action="{{ url_for('account') }}">
 				{{ update_email.csrf_token }}
 
+				<span>Current Email: {{ current_user.email }}</span>
 				{{ update_email.email.label }}
 				{{ update_email.email }}
 
@@ -37,8 +38,13 @@
 				<input type="submit" value="Update Password">
 			</form>
 		</fieldset>
+	</section>
 
-		<h3>Not, {{ current_user.name }}? <a href="{{ url_for('logout') }}">Logout.</a></h3>
-		<h3>Looking to update billing information? <a href="{{ url_for('billing') }}">See here.</a></h3>
+	<section class="sidebar center">
+		<h1>Options</h1>
+		<br /><br />
+		<a href="{{ url_for('billing') }}" class="button">Billing Information</a>
+		<br /><br />
+		<a href="{{ url_for('logout') }}" class="button">Logout</a>
 	</section>
 {% endblock content %}
