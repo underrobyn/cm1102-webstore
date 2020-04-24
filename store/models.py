@@ -85,13 +85,13 @@ class Orders(db.Model):
 	billing_id = db.Column(db.Integer, db.ForeignKey('billing.id'), nullable=False)
 
 
-
 class Basket(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+	id = db.Column(db.Integer, primary_key=True)
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
 
 class BasketItems(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    basket_id = db.Column(db.Integer, db.ForeignKey('basket.id'))
-    product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
-    quantity = db.Column(db.Integer, nullable=False)
+	id = db.Column(db.Integer, primary_key=True)
+	basket_id = db.Column(db.Integer, db.ForeignKey('basket.id'))
+	product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
+	quantity = db.Column(db.Integer, nullable=False)
