@@ -4,8 +4,8 @@ from sqlalchemy import create_engine
 
 from store import app, db, login_manager
 import flask_sqlalchemy
-from store.models import User, Products, Basket, BasketItems
-from store.forms import CreateUserForm, LoginUserForm, UpdateEmailForm, UpdatePasswordForm, AddToCart
+from store.models import User, Products, Address, Basket, BasketItems
+from store.forms import CreateUserForm, LoginUserForm, UpdateEmailForm, UpdatePasswordForm, AddToCart, AddAddressForm
 
 
 # App routes
@@ -18,7 +18,6 @@ def home():
 @app.route('/addcart', methods=["POST"])
 def AddCart():
     form = AddToCart()
-
 
     try:
         product_id = request.form.get("product_id")
@@ -47,13 +46,12 @@ def AddCart():
         return redirect(request.referrer)
 
 
-
 @app.route('/basket', methods=['GET'])
 def basket():
     addCart = AddToCart()
     currentBasket = Basket.query.all()
     products = Products.query.all()
-    return render_template('basket.html', cart=currentBasket, products=products, form=addCart,)
+    return render_template('basket.html', cart=currentBasket, products=products, form=addCart)
 
 
 @app.route('/checkout', methods=['GET'])

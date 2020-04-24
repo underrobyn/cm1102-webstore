@@ -10,14 +10,11 @@
 	<section class="form">
 		<form method="POST" action="{{ url_for('AddCart') }}">
 		  	<input type="hidden" name="product_id" value="{{ product_id }}">
-			<label for="">Quantity: </label>
+			<label for="amount">Quantity: </label>
 			<input type="number" name="amount">
-			<button type=""submit" class="button">Add Cart</button>
-
+			<button type="submit" class="button">Add Cart</button>
 
 		</form>
 
-
 	</section>
-
 {% endblock content %}

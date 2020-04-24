@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, IntegerField, SelectField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Regexp
 from store.config import password_req
-
+import re
 
 
 class CreateUserForm(FlaskForm):
@@ -40,12 +40,9 @@ class UpdateEmailForm(FlaskForm):
 	submit = SubmitField('Update Email')
 
 
-
-
-
 class AddToCart(FlaskForm):
 	quantity = IntegerField('Quantity: ', validators=[DataRequired()])
-	submit = SubmitField("add")
+	submit = SubmitField("Add")
 
 
 class UpdatePasswordForm(FlaskForm):
