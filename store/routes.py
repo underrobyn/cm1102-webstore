@@ -141,13 +141,44 @@ def account():
     account_delete_form = DeleteAccountForm(prefix="delacc")
 
     if email_form.validate_on_submit():
-        print(email_form)
+        entered_email = email_form.email.data
+        entered_pass = email_form.password.data
+
+        # Check if email already in use
+        results = User.query.filter_by(email=entered_email).all()
+        if len(results) > 0:
+            flash("This email is already in use by somebody else")
+            return redirect(url_for('account'))
+
+        # Check password is correct
+        if not current_user.verify_password(entered_pass):
+            flash("Account password was incorrect.")
+            return redirect(url_for('account'))
+
+        flash("Email was updated!")
 
     if password_form.validate_on_submit():
-        print(password_form)
+        entered_pass = password_form.password.data
+        entered_newpass = password_form.new_password.data
+
+        # Check password is correct
+        if not current_user.verify_password(entered_pass):
+            flash("Current password was incorrect.")
+            return redirect(url_for('account'))
+
+        flash("Password was updated!" + entered_newpass)
 
     if account_delete_form.validate_on_submit():
-        print(account_delete_form)
+        entered_pass = account_delete_form.password.data
+        entered_consent = account_delete_form.confirm_delete.data
+
+        # Check password is correct
+        if not current_user.verify_password(entered_pass):
+            flash("Account password was incorrect.")
+            return redirect(url_for('account'))
+
+        print(entered_consent)
+        flash("Account was deleted! You will now be logged out.")
 
     return render_template('account.html', title='Account', update_email=email_form, update_password=password_form, delete_account=account_delete_form)
 

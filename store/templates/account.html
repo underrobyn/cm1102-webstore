@@ -26,8 +26,8 @@
 			<form method="POST" action="{{ url_for('account') }}">
 				{{ update_password.csrf_token }}
 
-				{{ update_password.current_password.label }}
-				{{ update_password.current_password }}
+				{{ update_password.password.label }}
+				{{ update_password.password }}
 
 				{{ update_password.new_password.label }}
 				{{ update_password.new_password }}
@@ -46,14 +46,14 @@
 		<a href="{{ url_for('billing') }}" class="button">Billing Information</a>
 		<br /><br />
 		<a href="{{ url_for('logout') }}" class="button">Logout</a>
-
+		<br /><br />
 		<fieldset>
 			<legend>Account Deletion</legend>
 			<form method="POST" action="{{ url_for('account') }}">
 				{{ delete_account.csrf_token }}
 
-				{{ delete_account.current_password.label }}
-				{{ delete_account.current_password }}
+				{{ delete_account.password.label }}
+				{{ delete_account.password }}
 
 				{{ delete_account.confirm_delete.label }}
 				{{ delete_account.confirm_delete }}
