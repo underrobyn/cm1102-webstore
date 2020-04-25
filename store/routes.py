@@ -82,6 +82,8 @@ def basket():
 @app.route('/checkout', methods=['GET', 'POST'])
 @login_required
 def checkout():
+    form = InputBillingForm()
+
     # Get addresses
     addresses = Address.query.filter_by(user_id=current_user.id).all()
     if len(addresses) == 0:
@@ -92,48 +94,45 @@ def checkout():
     # Get basket
     total = 0
     basket = Basket.query.filter_by(user_id=current_user.id).first()
-    itemList = BasketItems.query.filter_by(basket_id=basket.id).all()
+    item_list = BasketItems.query.filter_by(basket_id=basket.id).all()
 
-    if len(itemList) == 0:
+    if len(item_list) == 0:
         flash('You must have items in your basket to checkout.')
         return redirect(url_for('home'))
 
-    for item in itemList:
+    for item in item_list:
         itemData = Products.query.filter_by(id=item.product_id).first()
         total = total + (itemData.price * item.quantity)
 
-    form = InputBillingForm()
-    if form.validate_on_submit():
-        # Add card to billing card table
-        new_billing = Billing(
-            card_number=form.card_number.data,
-            card_cvc=form.card_cvc.data,
-            card_end=form.card_end.data
-        )
-        db.session.add(new_billing)
-        db.session.flush()
+    if request.method == "POST":
+        if form.validate_on_submit():
+            # Add card to billing card table
+            new_billing = Billing(
+                card_number=form.card_number.data,
+                card_cvc=form.card_cvc.data,
+                card_end=form.card_end.data
+            )
+            db.session.add(new_billing)
+            db.session.flush()
 
-        print(request.args.get('billing_addr'))
-        print(request.args.get('delivery_addr'))
-        print(request.args)
-        # Add billing address
-        new_billingaddr = BillingAddress(
-            billing_id=new_billing.id,
-            address_id=request.args.get('billing_addr')
-        )
-        db.session.add(new_billingaddr)
-        db.session.flush()
+            # Add billing address
+            new_billingaddr = BillingAddress(
+                billing_id=new_billing.id,
+                address_id=request.form.get('billing_addr')
+            )
+            db.session.add(new_billingaddr)
+            db.session.flush()
 
-        new_order = Orders(
-            delivery_address_id=request.args.get('delivery_addr'),
-            billing_id=new_billingaddr.id
-        )
-        db.session.add(new_order)
-        db.session.commit()
+            new_order = Orders(
+                delivery_address_id=request.form.get('delivery_addr'),
+                billing_id=new_billingaddr.id
+            )
+            db.session.add(new_order)
+            db.session.commit()
 
-        flash('Order has been created.')
+            flash('Order has been created.')
 
-        return redirect(url_for('login'))
+            return redirect(url_for('homepage'))
 
     return render_template('checkout.html', addresses=addresses, billing=form, total=total, title='Checkout')
 
