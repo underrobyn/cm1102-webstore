@@ -4,22 +4,18 @@
 
 {% block content %}
 	<section class="main padding">
-		<h1>Basket</h1>
-		<h1>Reading Product Database</h1>
-		{% for product in products %}
-			<p>{{ product.name }}</p>
-			<p>{{ product.description }}</p>
-		{% endfor %}
-		<h1>Current Shoppping cart</h1>
-		{% for item in cart%}
-			{%for product in products %}
-				{% if item.id == current_user.id %}
-					{% if item.product_id == product.id %}
-						<p>Item: {{ product.name }}</p>
-						<p>Quantity: {{ item.quantity }}</p>
-					{% endif %}
-				{% endif %}
+		<h1>Current Basket</h1>
+		<ul>
+			{% for key, value in cart.items() %}
+				<hr>
+				<h3>Item Name: {{ key }}</h3>
+				<h5>Quantity: {{ value[0] }}</h5>
+				<h5>Price: £{{ value[1] }}</h5>
+				<h5>Subtotal: £{{ value[2] }}</h5>
 			{% endfor %}
-		{% endfor %}
+
+		</ul>
+		<hr>
+		<h2>Total: £{{ totalprice }}</h2>
 	</section>
 {% endblock content %}
