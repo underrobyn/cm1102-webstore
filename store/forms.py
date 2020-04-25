@@ -1,11 +1,6 @@
 from flask_wtf import FlaskForm
-<<<<<<< store/forms.py
 from wtforms import StringField, PasswordField, SubmitField, IntegerField, SelectField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Regexp, NumberRange
-=======
-from wtforms import StringField, PasswordField, SubmitField, IntegerField, SelectField, BooleanField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Regexp
->>>>>>> store/forms.py
 from store.config import password_req
 import re
 
