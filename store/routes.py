@@ -54,7 +54,34 @@ def AddCart():
 @app.route('/basket', methods=['GET'])
 def basket():
     addCart = AddToCart()
-    shoppingDict = {}
+    shoppingDict= {}
+    basketdata = Basket.query.filter_by(user_id=current_user.id).first()
+    items = BasketItems.query.filter_by(basket_id=basketdata.id).all()
+    products = Products.query.all()
+
+    for item in items:
+        for product in products:
+            if product.id == item.product_id:
+                name = product.name
+                if name in shoppingDict.keys():
+                    list = shoppingDict[name]
+                    quant = int(list[0]) + item.quantity
+                    subtotal = int(quant * product.price)
+                    shoppingDict[name] = [quant, product.price, subtotal]
+                else:
+                     subtotal = int(item.quantity * product.price)
+                     shoppingDict[name] = [item.quantity, product.price, subtotal]
+    total = 0
+    for item in shoppingDict.values():
+        total = total + item[2]
+
+
+
+
+
+
+
+    return render_template('basket.html', cart=shoppingDict, products=products, form=addCart, totalprice=total)
 
     basketdata = Basket.query.filter_by(user_id=current_user.id).first()
     items = BasketItems.query.filter_by(basket_id=basketdata.id).all()
