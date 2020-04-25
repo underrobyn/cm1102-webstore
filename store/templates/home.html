@@ -5,5 +5,11 @@
 {% block content %}
 	<section>
 		<h1>Homepage</h1>
+		
+		{% for product in products %}
+			{{ product.name }}
+			<a href="{{ url_for('product', product_id=product.id) }}">View</a>
+			<br />
+		{% endfor %}
 	</section>
 {% endblock content %}

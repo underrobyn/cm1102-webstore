@@ -12,7 +12,8 @@ from store.forms import CreateUserForm, LoginUserForm, UpdateEmailForm, UpdatePa
 @app.route('/')
 @app.route('/home', methods=['GET'])
 def home():
-    return render_template('home.html', title='Product Gallery')
+    products = Products.query.all()
+    return render_template('home.html', title='Product Gallery', products=products)
 
 
 @app.route('/addcart', methods=["POST"])
