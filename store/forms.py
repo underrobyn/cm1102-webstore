@@ -51,6 +51,10 @@ class UpdatePasswordForm(FlaskForm):
 	confirm_new_password = PasswordField('Confirm New Password', validators=[DataRequired(), EqualTo('new_password')])
 
 
+class delCart(FlaskForm):
+	delete = SubmitField("Clear Cart")
+
+
 class DeleteAccountForm(FlaskForm):
 	password = PasswordField('Account Password', validators=[DataRequired(), Length(min=password_req["min"], max=password_req["max"])])
 	confirm_delete = BooleanField("Are you sure?", validators=[DataRequired()])
@@ -61,3 +65,4 @@ class InputBillingForm(FlaskForm):
 	card_cvc = StringField('Card CVC', validators=[DataRequired(), Length(3)])
 	card_end = StringField('Card End', validators=[DataRequired(), Length(5)])
 	submit = SubmitField("Place Order")
+

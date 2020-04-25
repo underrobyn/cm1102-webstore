@@ -5,8 +5,7 @@ from sqlalchemy import create_engine
 from store import app, db, login_manager
 import flask_sqlalchemy
 from store.models import User, Products, Address, Basket, BasketItems, Billing, BillingAddress, Orders
-from store.forms import CreateUserForm, LoginUserForm, UpdateEmailForm, UpdatePasswordForm, AddToCart, AddAddressForm, \
-    DeleteAccountForm, InputBillingForm
+from store.forms import CreateUserForm, LoginUserForm, UpdateEmailForm, UpdatePasswordForm, AddToCart, AddAddressForm, DeleteAccountForm, InputBillingForm, delCart
 
 
 # App routes
@@ -51,10 +50,21 @@ def AddCart():
             return redirect(url_for("basket"))
 
 
-@app.route('/basket', methods=['GET'])
+@app.route('/basket', methods=['GET', 'POST'])
 def basket():
-    addCart = AddToCart()
-    shoppingDict= {}
+    delete_form = delCart()
+
+    if request.method == 'POST':
+        if delete_form.validate_on_submit():
+            basketdata = Basket.query.filter_by(user_id=current_user.id).first()
+            basket_items = BasketItems.query.filter_by(basket_id=basketdata.id).all()
+            for item in basket_items:
+                db.session.delete(item)
+            db.session.commit()
+
+            flash("Shopping Basket Cleared!")
+
+    shoppingDict = {}
     basketdata = Basket.query.filter_by(user_id=current_user.id).first()
     items = BasketItems.query.filter_by(basket_id=basketdata.id).all()
     products = Products.query.all()
@@ -71,17 +81,13 @@ def basket():
                 else:
                      subtotal = int(item.quantity * product.price)
                      shoppingDict[name] = [item.quantity, product.price, subtotal]
+
+    # Calculate total
     total = 0
     for item in shoppingDict.values():
         total = total + item[2]
 
-
-
-
-
-
-
-    return render_template('basket.html', cart=shoppingDict, products=products, form=addCart, totalprice=total)
+    return render_template('basket.html', cart=shoppingDict, products=products, form=delete_form, totalprice=total)
 
     basketdata = Basket.query.filter_by(user_id=current_user.id).first()
     items = BasketItems.query.filter_by(basket_id=basketdata.id).all()
