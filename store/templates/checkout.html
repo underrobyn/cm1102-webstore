@@ -3,7 +3,45 @@
 {% block title %}{{ title }}{% endblock title %}
 
 {% block content %}
-	<section>
-		<h1>Checkout</h1>
-	</section>
+<section class="form">
+	<h1>Checkout</h1>
+	<fieldset>
+		<legend>Order Summary</legend>
+		<p1>Order Total</p1>
+			{{ total }}
+			<input type="submit" value="Edit Basket">
+	</fieldset>
+
+	<fieldset>
+		<legend>Delivery Address</legend>
+			<label>Select Delivery Address</label>
+			<select id = "AddressSelect">
+				{% for address in addresses %}
+				<option value = address.id>
+					{{ address.city }}, {{ address.postcode }}, {{ address.houseid }} {{ address.street }}
+				</option>
+				{% endfor %}
+			</select>
+	</fieldset>
+
+	<fieldset>
+		<legend>Billing Details</legend>
+		<form method="POST" action="{{ url_for('home')}}">
+			{{ billing.card_number.label }}
+			{{ billing.card_number }}
+
+			{{ billing.card_cvc.label }}
+			{{ billing.card_cvc }}
+
+			{{ billing.card_end.label }}
+			{{ billing.card_end }}
+
+			<input type="submit" value="Place Order">
+			<! Needs to flash that order has been placed, and needs validation>
+		</form>
+	</fieldset>
+
+
+</section>
 {% endblock content %}
+

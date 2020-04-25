@@ -58,7 +58,39 @@ def basket():
 @app.route('/checkout', methods=['GET'])
 @login_required
 def checkout():
-    return render_template('checkout.html', title='Checkout')
+    #Get addressess#
+    addresses = Address.query.filter_by(user_id=current_user.id).all()
+    if len(addresses) == 0:
+        #redirect to billing#
+        flash('You must have a saved address to access checkout.')
+        return redirect(url_for('billing'))
+    #Get basket#
+    total = 0
+    basket = BasketItems.query.filter_by(basket_id=current_user.id).all()
+    if len(basket) == 0:
+        flash('You must have items in your basket to checkout.')
+        redirect(url_for('home'))
+    for items in basket:
+        itemPrice = Products.query.filter_by(item_id=item.product_id)
+        total = total + (itemPrice * item.quantity)
+
+    form = InputBillingForm()
+    if form.validate_on_submit():
+        new_billing = Billing(
+            card_number = card_number
+            card_cvc = card_cvc
+            card_end = card_end
+        )
+
+        new_order = Order(
+            delivery_address_id = AddressSelect
+            billing_id
+        )
+        flash('Account has been created. You can now login.')
+
+        return redirect(url_for('login'))
+
+    return render_template('checkout.html', addresses=addresses, billing=form, total=basket, title='Checkout')
 
 
 @app.route('/product/<int:product_id>', methods=['GET'])
