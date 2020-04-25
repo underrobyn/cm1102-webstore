@@ -65,19 +65,22 @@ def basket():
                 if name in shoppingDict.keys():
                     list = shoppingDict[name]
                     quant = int(list[0]) + item.quantity
-                    shoppingDict[name] = [quant, product.price]
+                    subtotal = int(quant * product.price)
+                    shoppingDict[name] = [quant, product.price, subtotal]
                 else:
-                     shoppingDict[name] = [item.quantity, product.price]
+                     subtotal = int(item.quantity * product.price)
+                     shoppingDict[name] = [item.quantity, product.price, subtotal]
+    total = 0
+    for item in shoppingDict.values():
+        total = total + item[2]
 
 
 
-    print(shoppingDict)
 
 
 
 
-
-    return render_template('basket.html', cart=shoppingDict, products=products, form=addCart)
+    return render_template('basket.html', cart=shoppingDict, products=products, form=addCart, totalprice=total)
 
 
 @app.route('/checkout', methods=['GET'])

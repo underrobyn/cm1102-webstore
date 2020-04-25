@@ -10,9 +10,11 @@
 			{% for key, value in cart.items() %}
 				<h3>Item Name: {{ key }}</h3>
 				<h5>Quantity: {{ value[0] }}</h5>
-				<h5>Price: {{ value[1] }}</h5>
+				<h5>Price: £{{ value[1] }}</h5>
+				<h5>Subtotal: £{{ value[2] }}</h5>
 			{% endfor %}
 
 		</ul>
+		<h2>Total: £{{ totalprice }}</h2>
 	</section>
 {% endblock content %}
