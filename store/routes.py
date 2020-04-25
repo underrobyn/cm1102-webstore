@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 
 from store import app, db, login_manager
 import flask_sqlalchemy
-from store.models import User, Products, Address, Basket, BasketItems, Billing, Orders
+from store.models import User, Products, Address, Basket, BasketItems, Billing, BillingAddress, Orders
 from store.forms import CreateUserForm, LoginUserForm, UpdateEmailForm, UpdatePasswordForm, AddToCart, AddAddressForm, \
     DeleteAccountForm, InputBillingForm
 
@@ -104,6 +104,7 @@ def checkout():
 
     form = InputBillingForm()
     if form.validate_on_submit():
+        # Add card to billing card table
         new_billing = Billing(
             card_number=form.card_number.data,
             card_cvc=form.card_cvc.data,
@@ -112,9 +113,20 @@ def checkout():
         db.session.add(new_billing)
         db.session.flush()
 
+        print(request.args.get('billing_addr'))
+        print(request.args.get('delivery_addr'))
+        print(request.args)
+        # Add billing address
+        new_billingaddr = BillingAddress(
+            billing_id=new_billing.id,
+            address_id=request.args.get('billing_addr')
+        )
+        db.session.add(new_billingaddr)
+        db.session.flush()
+
         new_order = Orders(
-            delivery_address_id=form.AddressSelect.data,
-            billing_id=new_billing.id
+            delivery_address_id=request.args.get('delivery_addr'),
+            billing_id=new_billingaddr.id
         )
         db.session.add(new_order)
         db.session.commit()
@@ -122,7 +134,6 @@ def checkout():
         flash('Order has been created.')
 
         return redirect(url_for('login'))
-
 
     return render_template('checkout.html', addresses=addresses, billing=form, total=total, title='Checkout')
 

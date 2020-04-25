@@ -13,11 +13,20 @@
 
 	<form method="POST" action="{{ url_for('checkout')}}">
 		<fieldset>
-			<legend>Delivery Address</legend>
+			<legend>Address Selection</legend>
 				<label>Select Delivery Address</label>
-				<select id="AddressSelect">
+				<select id="delivery_addr" name="delivery_addr">
 					{% for address in addresses %}
-					<option value ="{{ address.id }}">
+					<option value="{{ address.id }}">
+						{{ address.city }}, {{ address.postcode }}, {{ address.houseid }} {{ address.street }}
+					</option>
+					{% endfor %}
+				</select>
+
+				<label>Select Billing Address</label>
+				<select id="billing_addr" name="billing_addr">
+					{% for address in addresses %}
+					<option value="{{ address.id }}">
 						{{ address.city }}, {{ address.postcode }}, {{ address.houseid }} {{ address.street }}
 					</option>
 					{% endfor %}
