@@ -4,10 +4,10 @@
 
 {% block content %}
 	<section class="main padding">
-		<h1>Basket</h1>
-		<h1>Current Shoppping cart</h1>
+		<h1>Current Basket</h1>
 		<ul>
 			{% for key, value in cart.items() %}
+				<hr>
 				<h3>Item Name: {{ key }}</h3>
 				<h5>Quantity: {{ value[0] }}</h5>
 				<h5>Price: £{{ value[1] }}</h5>
@@ -15,6 +15,7 @@
 			{% endfor %}
 
 		</ul>
+		<hr>
 		<h2>Total: £{{ totalprice }}</h2>
 	</section>
 {% endblock content %}
