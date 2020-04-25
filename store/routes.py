@@ -55,6 +55,7 @@ def AddCart():
 def basket():
     addCart = AddToCart()
     shoppingDict = {}
+
     basketdata = Basket.query.filter_by(user_id=current_user.id).first()
     items = BasketItems.query.filter_by(basket_id=basketdata.id).all()
     products = Products.query.all()
@@ -81,19 +82,22 @@ def basket():
 @app.route('/checkout', methods=['GET', 'POST'])
 @login_required
 def checkout():
-    # Get addressess#
+    # Get addresses
     addresses = Address.query.filter_by(user_id=current_user.id).all()
     if len(addresses) == 0:
         # redirect to billing#
         flash('You must have a saved address to access checkout.')
         return redirect(url_for('billing'))
-    # Get basket#
+
+    # Get basket
     total = 0
     basket = Basket.query.filter_by(user_id=current_user.id).first()
     itemList = BasketItems.query.filter_by(basket_id=basket.id).all()
+
     if len(itemList) == 0:
         flash('You must have items in your basket to checkout.')
         return redirect(url_for('home'))
+
     for item in itemList:
         itemData = Products.query.filter_by(id=item.product_id).first()
         total = total + (itemData.price * item.quantity)
