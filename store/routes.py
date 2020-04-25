@@ -4,8 +4,9 @@ from sqlalchemy import create_engine
 
 from store import app, db, login_manager
 import flask_sqlalchemy
-from store.models import User, Products, Address, Basket, BasketItems
-from store.forms import CreateUserForm, LoginUserForm, UpdateEmailForm, UpdatePasswordForm, AddToCart, AddAddressForm, DeleteAccountForm
+from store.models import User, Products, Address, Basket, BasketItems, Billing, Orders
+from store.forms import CreateUserForm, LoginUserForm, UpdateEmailForm, UpdatePasswordForm, AddToCart, AddAddressForm, \
+    DeleteAccountForm, InputBillingForm
 
 
 # App routes
@@ -32,7 +33,7 @@ def AddCart():
 
             basket = Basket.query.filter_by(user_id=current_user.id).first()
 
-            if quantity and quantity > 0 and quantity <=250:
+            if quantity and quantity > 0 and quantity <= 250:
                 basket_item = BasketItems(basket_id=basket.id, product_id=product_id, quantity=quantity)
                 db.session.add(basket_item)
                 db.session.commit()
@@ -53,7 +54,7 @@ def AddCart():
 @app.route('/basket', methods=['GET'])
 def basket():
     addCart = AddToCart()
-    shoppingDict= {}
+    shoppingDict = {}
     basketdata = Basket.query.filter_by(user_id=current_user.id).first()
     items = BasketItems.query.filter_by(basket_id=basketdata.id).all()
     products = Products.query.all()
@@ -68,57 +69,58 @@ def basket():
                     subtotal = int(quant * product.price)
                     shoppingDict[name] = [quant, product.price, subtotal]
                 else:
-                     subtotal = int(item.quantity * product.price)
-                     shoppingDict[name] = [item.quantity, product.price, subtotal]
+                    subtotal = int(item.quantity * product.price)
+                    shoppingDict[name] = [item.quantity, product.price, subtotal]
     total = 0
     for item in shoppingDict.values():
         total = total + item[2]
 
-
-
-
-
-
-
     return render_template('basket.html', cart=shoppingDict, products=products, form=addCart, totalprice=total)
 
 
-@app.route('/checkout', methods=['GET'])
+@app.route('/checkout', methods=['GET', 'POST'])
 @login_required
 def checkout():
-    #Get addressess#
+    # Get addressess#
     addresses = Address.query.filter_by(user_id=current_user.id).all()
     if len(addresses) == 0:
-        #redirect to billing#
+        # redirect to billing#
         flash('You must have a saved address to access checkout.')
         return redirect(url_for('billing'))
-    #Get basket#
+    # Get basket#
     total = 0
-    basket = BasketItems.query.filter_by(basket_id=current_user.id).all()
-    if len(basket) == 0:
+    basket = Basket.query.filter_by(user_id=current_user.id).first()
+    itemList = BasketItems.query.filter_by(basket_id=basket.id).all()
+    if len(itemList) == 0:
         flash('You must have items in your basket to checkout.')
-        redirect(url_for('home'))
-    for items in basket:
-        itemPrice = Products.query.filter_by(item_id=item.product_id)
-        total = total + (itemPrice * item.quantity)
+        return redirect(url_for('home'))
+    for item in itemList:
+        itemData = Products.query.filter_by(id=item.product_id).first()
+        total = total + (itemData.price * item.quantity)
 
     form = InputBillingForm()
     if form.validate_on_submit():
         new_billing = Billing(
-            card_number = card_number
-            card_cvc = card_cvc
-            card_end = card_end
+            card_number=form.card_number.data,
+            card_cvc=form.card_cvc.data,
+            card_end=form.card_end.data
         )
+        db.session.add(new_billing)
+        db.session.flush()
 
-        new_order = Order(
-            delivery_address_id = AddressSelect
-            billing_id
+        new_order = Orders(
+            delivery_address_id=form.AddressSelect.data,
+            billing_id=new_billing.id
         )
-        flash('Account has been created. You can now login.')
+        db.session.add(new_order)
+        db.session.commit()
+
+        flash('Order has been created.')
 
         return redirect(url_for('login'))
 
-    return render_template('checkout.html', addresses=addresses, billing=form, total=basket, title='Checkout')
+
+    return render_template('checkout.html', addresses=addresses, billing=form, total=total, title='Checkout')
 
 
 @app.route('/product/<int:product_id>', methods=['GET'])
@@ -276,7 +278,8 @@ def account():
             logout_user()
             return redirect(url_for('login'))
 
-    return render_template('account.html', title='Account', update_email=email_form, update_password=password_form, delete_account=account_delete_form)
+    return render_template('account.html', title='Account', update_email=email_form, update_password=password_form,
+                           delete_account=account_delete_form)
 
 
 @app.route('/billing', methods=['GET', 'POST'])
@@ -323,7 +326,8 @@ def billing():
     # Get a list of this users addresses
     addresses = Address.query.filter_by(user_id=current_user.id).all()
 
-    return render_template('billing.html', title='Billing Information', add_address=address_form, address_list=addresses)
+    return render_template('billing.html', title='Billing Information', add_address=address_form,
+                           address_list=addresses)
 
 
 @app.route('/logout')
