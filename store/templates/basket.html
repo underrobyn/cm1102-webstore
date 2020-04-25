@@ -18,4 +18,11 @@
 		<hr>
 		<h2>Total: £{{ totalprice }}</h2>
 	</section>
+	<section class="form">
+			<form method="POST" action="{{ url_for('basket') }}">
+				{{ form.csrf_token }}
+
+			<input type="submit" value="Clear Cart" />
+			</form>
+	</section>
 {% endblock content %}

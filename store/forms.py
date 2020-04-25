@@ -49,3 +49,6 @@ class UpdatePasswordForm(FlaskForm):
 	current_password = PasswordField('Current Password', validators=[DataRequired(), Length(min=password_req["min"], max=password_req["max"])])
 	new_password = PasswordField('New Password', validators=[DataRequired(), Length(min=password_req["min"], max=password_req["max"])])
 	confirm_new_password = PasswordField('Confirm New Password', validators=[DataRequired(), EqualTo('new_password')])
+
+class delCart(FlaskForm):
+	delete = SubmitField("Clear Cart")

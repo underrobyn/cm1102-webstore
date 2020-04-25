@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 from store import app, db, login_manager
 import flask_sqlalchemy
 from store.models import User, Products, Address, Basket, BasketItems
-from store.forms import CreateUserForm, LoginUserForm, UpdateEmailForm, UpdatePasswordForm, AddToCart, AddAddressForm
+from store.forms import CreateUserForm, LoginUserForm, UpdateEmailForm, UpdatePasswordForm, AddToCart, AddAddressForm, delCart
 
 
 # App routes
@@ -81,6 +81,27 @@ def basket():
 
 
     return render_template('basket.html', cart=shoppingDict, products=products, form=addCart, totalprice=total)
+
+@app.route('/basket', methods=["GET","POST"])
+def clearCart():
+    form = delCart()
+    if form.validate_on_submit():
+        try:
+            basketdata = Basket.query.filter_by(user_id=current_user.id).first()
+            basket_items = BasketItems.query.filter_by(basket_id=basketdata.id).all()
+            for item in basket_items:
+                db.session.delete(item)
+            db.session.delete(basketdata)
+            db.session.flush()
+            flash("Shopping Basket Cleared!")
+            return render_template('basket.html', form=form)
+
+        except Exception as e:
+            print(e)
+            flash("Cart not Cleared")
+            return redirect(url_for("basket"))
+
+
 
 
 @app.route('/checkout', methods=['GET'])
