@@ -82,7 +82,7 @@ class OrderProducts(db.Model):
 class Orders(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	delivery_address_id = db.Column(db.Integer, db.ForeignKey('address.id'), nullable=False)
-	billing_id = db.Column(db.Integer, db.ForeignKey('billing.id'), nullable=False)
+	billing_id = db.Column(db.Integer, db.ForeignKey('billing_address.id'), nullable=False)
 
 
 class Basket(db.Model):
