@@ -52,7 +52,18 @@ def AddCart():
 
 @app.route('/basket', methods=['GET', 'POST'])
 def basket():
-    addCart = AddToCart()
+    delete_form = delCart()
+
+    if request.method == 'POST':
+        if delete_form.validate_on_submit():
+            basketdata = Basket.query.filter_by(user_id=current_user.id).first()
+            basket_items = BasketItems.query.filter_by(basket_id=basketdata.id).all()
+            for item in basket_items:
+                db.session.delete(item)
+            db.session.commit()
+
+            flash("Shopping Basket Cleared!")
+
     shoppingDict = {}
     basketdata = Basket.query.filter_by(user_id=current_user.id).first()
     items = BasketItems.query.filter_by(basket_id=basketdata.id).all()
@@ -70,24 +81,13 @@ def basket():
                 else:
                      subtotal = int(item.quantity * product.price)
                      shoppingDict[name] = [item.quantity, product.price, subtotal]
+
+    # Calculate total
     total = 0
     for item in shoppingDict.values():
         total = total + item[2]
 
-    if request.method == 'POST':
-        delete_form = delCart()
-
-        if delete_form.validate_on_submit():
-            basketdata = Basket.query.filter_by(user_id=current_user.id).first()
-            basket_items = BasketItems.query.filter_by(basket_id=basketdata.id).all()
-            for item in basket_items:
-                db.session.delete(item)
-            db.session.commit()
-
-            flash("Shopping Basket Cleared!")
-            return render_template('basket.html', form=delete_form, cart=shoppingDict, products=products, totalprice=total)
-
-    return render_template('basket.html', cart=shoppingDict, products=products, form=addCart, totalprice=total)
+    return render_template('basket.html', cart=shoppingDict, products=products, form=delete_form, totalprice=total)
 
 
 @app.route('/checkout', methods=['GET'])
