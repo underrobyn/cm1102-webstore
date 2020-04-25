@@ -3,7 +3,53 @@
 {% block title %}{{ title }}{% endblock title %}
 
 {% block content %}
-	<section>
-		<h1>Checkout</h1>
-	</section>
+<section class="form">
+	<h1>Checkout</h1>
+	<fieldset>
+		<legend>Order Summary</legend>
+		<p>Order Total: £{{ total }}</p>
+		<input type="submit" value="Edit Basket">
+	</fieldset>
+
+	<form method="POST" action="{{ url_for('checkout')}}">
+		<fieldset>
+			<legend>Address Selection</legend>
+			<label for="delivery_addr">Select Delivery Address</label>
+			<select id="delivery_addr" name="delivery_addr">
+				{% for address in addresses %}
+				<option value="{{ address.id }}">
+					{{ address.city }}, {{ address.postcode }}, {{ address.houseid }} {{ address.street }}
+				</option>
+				{% endfor %}
+			</select>
+
+			<label for="billing_addr">Select Billing Address</label>
+			<select id="billing_addr" name="billing_addr">
+				{% for address in addresses %}
+				<option value="{{ address.id }}">
+					{{ address.city }}, {{ address.postcode }}, {{ address.houseid }} {{ address.street }}
+				</option>
+				{% endfor %}
+			</select>
+		</fieldset>
+
+		<fieldset>
+			<legend>Billing Details</legend>
+			{{ billing.csrf_token }}
+
+			{{ billing.card_number.label }}
+			{{ billing.card_number }}
+
+			{{ billing.card_cvc.label }}
+			{{ billing.card_cvc }}
+
+			{{ billing.card_end.label }}
+			{{ billing.card_end }}
+
+			<input type="submit" value="Place Order">
+			<! Needs to flash that order has been placed, and needs validation>
+		</fieldset>
+	</form>
+
+</section>
 {% endblock content %}
