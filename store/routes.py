@@ -191,7 +191,30 @@ def account():
                 flash("Please give consent for the account to be deleted")
                 return redirect(url_for('account'))
 
-            flash("Account was deleted! You will now be logged out.")
+            # Delete user basket
+            user_basket = Basket.query.filter_by(user_id=current_user.id).first()
+            basket_items = BasketItems.query.filter_by(basket_id=user_basket.id).all()
+            for item in basket_items:
+                db.session.delete(item)
+            db.session.delete(user_basket)
+            db.session.flush()
+
+            # Delete user addresses
+            user_addresses = Address.query.filter_by(user_id=current_user.id).all()
+            for address in user_addresses:
+                db.session.delete(address)
+            db.session.flush()
+
+            # Delete user account
+            db.session.delete(update_user)
+
+            # Save changes to db
+            db.session.commit()
+
+            # Logout user
+            flash("Your account has been deleted.")
+            logout_user()
+            return redirect(url_for('login'))
 
     return render_template('account.html', title='Account', update_email=email_form, update_password=password_form, delete_account=account_delete_form)
 
