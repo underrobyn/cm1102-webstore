@@ -53,7 +53,7 @@ def AddCart():
 @app.route('/basket', methods=['GET', 'POST'])
 def basket():
     addCart = AddToCart()
-    shoppingDict= {}
+    shoppingDict = {}
     basketdata = Basket.query.filter_by(user_id=current_user.id).first()
     items = BasketItems.query.filter_by(basket_id=basketdata.id).all()
     products = Products.query.all()
@@ -75,16 +75,17 @@ def basket():
         total = total + item[2]
 
     if request.method == 'POST':
-        form = delCart()
-        if form.validate_on_submit():
+        delete_form = delCart()
+
+        if delete_form.validate_on_submit():
             basketdata = Basket.query.filter_by(user_id=current_user.id).first()
             basket_items = BasketItems.query.filter_by(basket_id=basketdata.id).all()
             for item in basket_items:
                 db.session.delete(item)
-            db.session.delete(basketdata)
-            db.session.flush()
+            db.session.commit()
+
             flash("Shopping Basket Cleared!")
-            return render_template('basket.html', form=form, cart=shoppingDict, products=products, totalprice=total)
+            return render_template('basket.html', form=delete_form, cart=shoppingDict, products=products, totalprice=total)
 
     return render_template('basket.html', cart=shoppingDict, products=products, form=addCart, totalprice=total)
 
