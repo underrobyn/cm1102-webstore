@@ -224,6 +224,10 @@ section.sidebar {
 	margin:1% 0;
 }
 
+section.sidebar fieldset {
+	margin:0 2vw 0 0;
+}
+
 @media screen and (max-width: 1280px) {
 	section.form {
 		width: 60%;
