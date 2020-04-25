@@ -5,7 +5,8 @@
 {% block content %}
 	<section class="main padding">
 		<h1>Current Basket</h1>
-		<ul>
+		{% if cart|length > 0 %}
+			<ul>
 			{% for key, value in cart.items() %}
 				<hr>
 				<h3>Item Name: {{ key }}</h3>
@@ -13,16 +14,16 @@
 				<h5>Price: £{{ value[1] }}</h5>
 				<h5>Subtotal: £{{ value[2] }}</h5>
 			{% endfor %}
-
-		</ul>
+			</ul>
 		<hr>
 		<h2>Total: £{{ totalprice }}</h2>
+		{% endif %}
 	</section>
 	<section class="form">
-			<form method="POST" action="{{ url_for('basket') }}">
-				{{ form.csrf_token }}
+		<form method="POST" action="{{ url_for('basket') }}">
+			{{ form.csrf_token }}
 
 			<input type="submit" value="Clear Cart" />
-			</form>
+		</form>
 	</section>
 {% endblock content %}

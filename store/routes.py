@@ -50,7 +50,7 @@ def AddCart():
             return redirect(url_for("basket"))
 
 
-@app.route('/basket', methods=['GET'])
+@app.route('/basket', methods=['GET', 'POST'])
 def basket():
     addCart = AddToCart()
     shoppingDict= {}
@@ -74,19 +74,9 @@ def basket():
     for item in shoppingDict.values():
         total = total + item[2]
 
-
-
-
-
-
-
-    return render_template('basket.html', cart=shoppingDict, products=products, form=addCart, totalprice=total)
-
-@app.route('/basket', methods=["GET","POST"])
-def clearCart():
-    form = delCart()
-    if form.validate_on_submit():
-        try:
+    if request.method == 'POST':
+        form = delCart()
+        if form.validate_on_submit():
             basketdata = Basket.query.filter_by(user_id=current_user.id).first()
             basket_items = BasketItems.query.filter_by(basket_id=basketdata.id).all()
             for item in basket_items:
@@ -94,14 +84,9 @@ def clearCart():
             db.session.delete(basketdata)
             db.session.flush()
             flash("Shopping Basket Cleared!")
-            return render_template('basket.html', form=form)
+            return render_template('basket.html', form=form, cart=shoppingDict, products=products, totalprice=total)
 
-        except Exception as e:
-            print(e)
-            flash("Cart not Cleared")
-            return redirect(url_for("basket"))
-
-
+    return render_template('basket.html', cart=shoppingDict, products=products, form=addCart, totalprice=total)
 
 
 @app.route('/checkout', methods=['GET'])
