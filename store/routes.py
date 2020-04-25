@@ -32,13 +32,17 @@ def AddCart():
 
             basket = Basket.query.filter_by(user_id=current_user.id).first()
 
-            if quantity and quantity > 0:
+            if quantity and quantity > 0 and quantity <=250:
                 basket_item = BasketItems(basket_id=basket.id, product_id=product_id, quantity=quantity)
                 db.session.add(basket_item)
                 db.session.commit()
 
                 flash("Item added to basket")
                 return redirect(url_for("basket"))
+            else:
+                flash("The quantity you entered was too large")
+                return redirect("basket")
+
 
         except Exception as e:
             print(e)
@@ -49,10 +53,31 @@ def AddCart():
 @app.route('/basket', methods=['GET'])
 def basket():
     addCart = AddToCart()
-    currentBasket = BasketItems.query.filter_by(basket_id=current_user.id).all()
-    print(currentBasket)
+    shoppingDict= {}
+    basketdata = Basket.query.filter_by(user_id=current_user.id).first()
+    items = BasketItems.query.filter_by(basket_id=basketdata.id).all()
     products = Products.query.all()
-    return render_template('basket.html', cart=currentBasket, products=products, form=addCart)
+
+    for item in items:
+        for product in products:
+            if product.id == item.product_id:
+                name = product.name
+                if name in shoppingDict.keys():
+                    list = shoppingDict[name]
+                    quant = int(list[0]) + item.quantity
+                    shoppingDict[name] = [quant, product.price]
+                else:
+                     shoppingDict[name] = [item.quantity, product.price]
+
+
+
+    print(shoppingDict)
+
+
+
+
+
+    return render_template('basket.html', cart=shoppingDict, products=products, form=addCart)
 
 
 @app.route('/checkout', methods=['GET'])

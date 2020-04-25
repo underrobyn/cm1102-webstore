@@ -6,8 +6,9 @@
 	<section>
 		<h1>Product page - {{ product_id }}</h1>
 	</section>
-	<hr>
+
 	<section class="form">
+		<hr>
 		<form method="POST" action="{{ url_for('AddCart') }}">
 			{{ add_cart.csrf_token }}
 
