@@ -1,15 +1,11 @@
 from flask import url_for, request, redirect, flash
 from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user
-from store.models import User, Basket, Billing, BillingAddress, Address, OrderProducts, Orders, Products
+from store.models import User, Basket, BasketItems, Billing, BillingAddress, Address, OrderProducts, Orders, Products
 from store import admin, db
 
 
 class AdminView(ModelView):
-	list_template = 'admin_templates/list.html'
-	edit_template = 'admin_templates/edit.html'
-	create_template = 'admin_templates/create.html'
-
 	def is_accessible(self):
 		if current_user.is_authenticated:
 			if current_user.get_id():
@@ -32,11 +28,12 @@ class UsersView(AdminView):
 
 
 # Admin views
-admin.add_view(UsersView(User, db.session))  # , category="User Data"
-admin.add_view(AdminView(Basket, db.session))
-admin.add_view(AdminView(Billing, db.session))
-admin.add_view(AdminView(BillingAddress, db.session))
-admin.add_view(AdminView(Address, db.session))
-admin.add_view(AdminView(OrderProducts, db.session))
-admin.add_view(AdminView(Orders, db.session))
+admin.add_view(UsersView(User, db.session))
+admin.add_view(AdminView(Basket, db.session, category="Basket"))
+admin.add_view(AdminView(BasketItems, db.session, category="Basket"))
+admin.add_view(AdminView(Billing, db.session, category="Billing"))
+admin.add_view(AdminView(BillingAddress, db.session, category="Billing"))
+admin.add_view(AdminView(Address, db.session, category="Billing"))
+admin.add_view(AdminView(OrderProducts, db.session, category="Orders"))
+admin.add_view(AdminView(Orders, db.session, category="Orders"))
 admin.add_view(AdminView(Products, db.session))

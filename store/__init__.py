@@ -21,7 +21,7 @@ db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-admin = Admin(app, name='ToBeNamedAdmin', base_template='admin_templates/layout.html', template_mode='bootstrap3')
+admin = Admin(app, name='ToBeNamedAdmin', template_mode='bootstrap3')
 
 from store import routes
 from store import views
