@@ -13,6 +13,12 @@ from store.forms import CreateUserForm, LoginUserForm, UpdateEmailForm, UpdatePa
 @app.route('/home', methods=['GET'])
 def home():
     products = Products.query.all()
+
+    if len(request.args) != 0:
+        if request.args.get('search_products'):
+            search_query = '%' + request.args.get('search_products') + '%'
+            products = Products.query.filter(Products.name.like(search_query)).all()
+
     return render_template('home.html', title='Product Gallery', products=products)
 
 

@@ -6,6 +6,7 @@ def rand_digits():
 	return ''.join([choice(['1','2','3','4','5','6','7','8','9','0']) for n in range(3)])
 
 def build_sample_db():
+		# Add users
 	first_names = [
 		'Harry', 'Amelia', 'Oliver', 'Jack', 'Isabella', 'Charlie','Sophie', 'Mia',
 		'Jacob', 'Thomas', 'Emily', 'Lily', 'Ava', 'Isla', 'Alfie', 'Olivia', 'Jessica',
@@ -36,6 +37,25 @@ def build_sample_db():
 		)
 		db.session.add(new_basket)
 		print("Added: " + fn + " " + ln)
+
+	# Add products
+	product_list = ['T-Shirt', 'Socks', 'Trousers', 'Shoes', 'Boxers', 'Sunglasses']
+	product_descriptors = ['Vintage', 'Designer', 'Limited Edition', 'Regular']
+	sizes = ['Extra Small', 'Small', 'Medium', 'Large']
+
+	for i in range(len(product_list)):
+		for j in range(len(sizes)):
+			desc = choice(product_descriptors)
+			new_product = Products(
+				name=desc + " " + product_list[i],
+				image = product_list[i].lower() + ".jpg",
+				description = "Buy " + product_list[i],
+				size = sizes[j],
+				weight = rand_digits(),
+				style = desc,
+				price = rand_digits()
+			)
+			db.session.add(new_product)
 	
 	db.session.commit()
 	

@@ -19,7 +19,9 @@
 	
 		<nav>
 			<div id="search">
-				<input type="search" id="site_search" name="site_search" placeholder="Search Products..." maxlength="150" />
+				<form action="{{ url_for('home') }}" method="get">
+					<input type="search" id="site_search" name="search_products" placeholder="Search Products..." maxlength="150" />
+				</form>
 			</div>
 			<div id="actions">
 				<a href="{{ url_for('home') }}" title="Homepage">

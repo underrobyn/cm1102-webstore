@@ -68,6 +68,9 @@ class Products(db.Model):
 	name = db.Column(db.String(100), nullable=False)
 	image = db.Column(db.String(30), nullable=False)
 	description = db.Column(db.Text, nullable=False)
+	size = db.Column(db.String(20), nullable=False, default="Medium")
+	weight = db.Column(db.Float, nullable=False)
+	style = db.Column(db.String(30), nullable=False)
 	price = db.Column(db.Integer, nullable=False)
 
 
