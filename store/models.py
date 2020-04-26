@@ -15,7 +15,7 @@ class User(UserMixin, db.Model):
 	name = db.Column(db.String(50), nullable=False)
 	password_hash = db.Column(db.String(128))
 	password = db.Column(db.String(60), nullable=False)
-	email = db.Column(db.String(256), nullable=False)
+	email = db.Column(db.String(256), unique=True, nullable=False)
 	active = db.Column(db.Integer, nullable=False)
 	permission_level = db.Column(db.Integer, nullable=False)
 

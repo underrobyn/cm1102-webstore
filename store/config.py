@@ -1,4 +1,4 @@
-db_uri = 'mysql+pymysql://u953270795_webstore:FSDF82Jlkaoqtnm122s@server150.main-hosting.eu:3306/u953270795_webstore'
+db_uri = 'mysql+pymysql://c1931370:8Gge4rk6fYjedkxmoxhU@csmysql.cs.cf.ac.uk:3306/c1931370_team5webstore'
 
 secret_key = 'uerhg34g35gm'
 
