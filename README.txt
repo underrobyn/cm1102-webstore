@@ -14,7 +14,7 @@ This is submission of Group 5
 Group Member 1:
   1. Student number: 1931370
   2. Email address: mcneillj@cardiff.ac.uk
-  3. Responsible for the following functionality: Admin Pages & User Account functionality
+  3. Responsible for the following functionality: User Account functionality
 
 Group Member 2:
   1. Student number:
