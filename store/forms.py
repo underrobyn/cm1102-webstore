@@ -60,6 +60,10 @@ class DeleteAccountForm(FlaskForm):
 	confirm_delete = BooleanField("Are you sure?", validators=[DataRequired()])
 
 
+class DownloadDataForm(FlaskForm):
+	password = PasswordField('Account Password', validators=[DataRequired(), Length(min=password_req["min"], max=password_req["max"])])
+
+
 class InputBillingForm(FlaskForm):
 	card_number = StringField('Card Number', validators=[DataRequired(), Length(16)])
 	card_cvc = StringField('Card CVC', validators=[DataRequired(), Length(3)])
