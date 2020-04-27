@@ -7,6 +7,7 @@ from flask_admin import Admin
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = c.secret_key
+app.config['DL_FOLDER'] = 'downloads'
 app.config['SQLALCHEMY_DATABASE_URI'] = c.db_uri
 app.config['SQLALCHEMY_POOL_RECYCLE'] = 90
 
