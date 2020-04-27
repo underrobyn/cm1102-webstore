@@ -33,26 +33,25 @@ def AddCart():
 		product_id = request.form.get("product_id")
 		quantity = int(form.quantity.data)
 
-        #Check product exists
-        try:
-            product = Products.query.filter_by(id=product_id).first()
-            if not product or not product_id:
-                flash("Item does not exist")
-                return redirect(request.referrer)
+		# Check product exists
+		try:
+			product = Products.query.filter_by(id=product_id).first()
+			if not product or not product_id:
+				flash("Item does not exist")
+				return redirect(request.referrer)
 
-            basket = Basket.query.filter_by(user_id=current_user.id).first()
-            #Adding product to cart if quantity <250
-            if quantity and quantity > 0 and quantity <= 250:
-                basket_item = BasketItems(basket_id=basket.id, product_id=product_id, quantity=quantity)
-                db.session.add(basket_item)
-                db.session.commit()
+			basket = Basket.query.filter_by(user_id=current_user.id).first()
+			# Adding product to cart if quantity <250
+			if quantity and quantity > 0 and quantity <= 250:
+				basket_item = BasketItems(basket_id=basket.id, product_id=product_id, quantity=quantity)
+				db.session.add(basket_item)
+				db.session.commit()
 
 				flash("Item added to basket")
 				return redirect(url_for("basket"))
 			else:
 				flash("The quantity you entered was too large")
 				return redirect("basket")
-
 
 		except Exception as e:
 			print(e)
@@ -63,49 +62,49 @@ def AddCart():
 @app.route('/basket', methods=['GET', 'POST'])
 @login_required
 def basket():
-    delete_form = delCart()
-    #Clear all Cart
-    if request.method == 'POST':
-        if delete_form.validate_on_submit():
-            basketdata = Basket.query.filter_by(user_id=current_user.id).first()
-            basket_items = BasketItems.query.filter_by(basket_id=basketdata.id).all()
-            for item in basket_items:
-                db.session.delete(item)
-            db.session.commit()
+	delete_form = delCart()
+	# Clear all Cart
+	if request.method == 'POST':
+		if delete_form.validate_on_submit():
+			basketdata = Basket.query.filter_by(user_id=current_user.id).first()
+			basket_items = BasketItems.query.filter_by(basket_id=basketdata.id).all()
+			for item in basket_items:
+				db.session.delete(item)
+			db.session.commit()
 
-            flash("Shopping Basket Cleared!")
+			flash("Shopping Basket Cleared!")
 
-    #Delete individual item
-    if request.args.get('deleteitem'):
-        productID = request.args.get('deleteitem')
-        basketproduct = BasketItems.query.filter_by(product_id=productID).first()
-        db.session.delete(basketproduct)
-        db.session.commit()
-        flash("Item removed from Basket!")
+	# Delete individual item
+	if request.args.get('deleteitem'):
+		productID = request.args.get('deleteitem')
+		basketproduct = BasketItems.query.filter_by(product_id=productID).first()
+		db.session.delete(basketproduct)
+		db.session.commit()
+		flash("Item removed from Basket!")
 
-    products = Products.query.all()
-    shoppingDict = {}
-    basketdata = Basket.query.filter_by(user_id=current_user.id).first()
-    items = BasketItems.query.filter_by(basket_id=basketdata.id).all()
-    #Create dict for jinja
-    for item in items:
-        product = Products.query.filter_by(id=item.product_id).first()
-        if product.id in shoppingDict.keys():
-            list = shoppingDict[product.id]
-            quant = int(list[0]) + item.quantity
-            subtotal = int(quant * product.price)
-            shoppingDict[product.id] = [product.name, quant, product.price, subtotal]
-        else:
-            subtotal = int(item.quantity * product.price)
-            shoppingDict[product.id] = [product.name, item.quantity, product.price, subtotal]
+	products = Products.query.all()
+	shoppingDict = {}
+	basket_data = Basket.query.filter_by(user_id=current_user.id).first()
+	items = BasketItems.query.filter_by(basket_id=basket_data.id).all()
+	
+	# Create dict for jinja
+	for item in items:
+		product = Products.query.filter_by(id=item.product_id).first()
+		if product.id in shoppingDict.keys():
+			list = shoppingDict[product.id]
+			quant = int(list[0]) + item.quantity
+			subtotal = int(quant * product.price)
+			shoppingDict[product.id] = [product.name, quant, product.price, subtotal]
+		else:
+			subtotal = int(item.quantity * product.price)
+			shoppingDict[product.id] = [product.name, item.quantity, product.price, subtotal]
 
-    # Calculate total
-    total = 0
-    for item in shoppingDict.values():
-        total = total + item[3]
+	# Calculate total
+	total = 0
+	for item in shoppingDict.values():
+		total = total + item[3]
 
-    return render_template('basket.html', cart=shoppingDict, products=products, form=delete_form, totalprice=total)
-
+	return render_template('basket.html', cart=shoppingDict, products=products, form=delete_form, totalprice=total)
 
 
 @app.route('/checkout', methods=['GET', 'POST'])
@@ -181,7 +180,8 @@ def reviews(product_id):
 	reviews = ProductReviews.query.filter_by(product_id=product_id).all()
 	add_review_form = ProductReviewForm()
 
-	return render_template('reviews.html', product=product_info, reviews=reviews, add_review=add_review_form, title='Reviews for ' + product_info.name)
+	return render_template('reviews.html', product=product_info, reviews=reviews, add_review=add_review_form,
+	                       title='Reviews for ' + product_info.name)
 
 
 # Account system routes
