@@ -61,5 +61,16 @@
 				<input type="submit" value="Delete Account" />
 			</form>
 		</fieldset>
+		<br /><br />
+		<fieldset>
+			<legend>Download Data</legend>
+			<form method="POST" action="{{ url_for('gdpr_download') }}">
+				{{ download_data.csrf_token }}
+
+				{{ download_data.password.label }}
+				{{ download_data.password }}
+				<input type="submit" value="Download Data" />
+			</form>
+		</fieldset>
 	</section>
 {% endblock content %}

@@ -29,8 +29,7 @@ class UsersView(AdminView):
 
 # Admin views
 admin.add_view(UsersView(User, db.session))
-admin.add_view(AdminView(Basket, db.session, category="Basket"))
-admin.add_view(AdminView(BasketItems, db.session, category="Basket"))
+admin.add_view(AdminView(BasketItems, db.session))
 admin.add_view(AdminView(Billing, db.session, category="Billing"))
 admin.add_view(AdminView(BillingAddress, db.session, category="Billing"))
 admin.add_view(AdminView(Address, db.session, category="Billing"))

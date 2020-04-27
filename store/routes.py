@@ -1,11 +1,11 @@
-from flask import render_template, url_for, request, redirect, flash, make_response, session
+from flask import render_template, url_for, request, redirect, flash, make_response, session, send_from_directory
 from flask_login import login_user, logout_user, current_user, login_required
 from sqlalchemy import create_engine
 
 from store import app, db, login_manager
-import flask_sqlalchemy
-from store.models import User, Products, Address, Basket, BasketItems, Billing, BillingAddress, Orders
-from store.forms import CreateUserForm, LoginUserForm, UpdateEmailForm, UpdatePasswordForm, AddToCart, AddAddressForm, DeleteAccountForm, InputBillingForm, delCart
+import flask_sqlalchemy, os, time, json
+from store.models import User, Products, Address, Basket, BasketItems, Billing, BillingAddress, Orders, OrderProducts
+from store.forms import CreateUserForm, LoginUserForm, UpdateEmailForm, UpdatePasswordForm, AddToCart, AddAddressForm, DeleteAccountForm, DownloadDataForm, InputBillingForm, delCart
 
 
 # App routes
@@ -255,6 +255,7 @@ def account():
     email_form = UpdateEmailForm(prefix="updemail")
     password_form = UpdatePasswordForm(prefix="updpass")
     account_delete_form = DeleteAccountForm(prefix="delacc")
+    account_data_form = DownloadDataForm(prefix="dlacc")
 
     # If this is a post request then we have a lot of work to do...
     if request.method == "POST":
@@ -333,7 +334,7 @@ def account():
             return redirect(url_for('login'))
 
     return render_template('account.html', title='Account', update_email=email_form, update_password=password_form,
-                           delete_account=account_delete_form)
+                           delete_account=account_delete_form, download_data=account_data_form)
 
 
 @app.route('/billing', methods=['GET', 'POST'])
@@ -383,6 +384,74 @@ def billing():
     return render_template('billing.html', title='Billing Information', add_address=address_form,
                            address_list=addresses)
 
+
+@app.route('/gdpr_download', methods=['POST'])
+def gdpr_download():
+    account_data_form = DownloadDataForm(prefix="dlacc")
+
+    # Check user password
+    if account_data_form.validate_on_submit():
+        entered_pass = account_data_form.password.data
+
+        # Check password is correct
+        if not current_user.verify_password(entered_pass):
+            flash("Current password was incorrect.")
+            return redirect(url_for('account'))
+
+    # Get user information from database
+    addresses = Address.query.filter_by(user_id=current_user.id).all()
+    basket = Address.query.filter_by(user_id=current_user.id).first()
+    basket_items = BasketItems.query.filter_by(basket_id=basket.id).all()
+
+    def get_product_info(product_id):
+        inf = Products.query.filter_by(id=product_id).first()
+        return {
+            "name":inf.name,
+            "description":inf.description,
+            "style":inf.style,
+            "price":inf.price
+        }
+
+    order_info = {}
+    address_info = []
+    for addr in addresses:
+        address_info.append({
+            "postcode":addr.postcode,
+            "house":addr.houseid,
+            "street":addr.street,
+            "city":addr.city
+        })
+
+        # Get order details
+        get_order = Orders.query.filter_by(delivery_address_id=addr.id).all()
+        for order in get_order:
+            products_in_order = OrderProducts.query.filter_by(order_id=order.id).all()
+            for order_info in products_in_order:
+                product_inf = get_product_info(order_info.product_id)
+                order_info[order.id] = product_inf
+                order_info[order.id]["total"] = product_inf["price"] * order_info.quantity
+
+
+    output_data = {
+        "UserAccountInformation": [{
+            "time_registered":current_user.time_created.isoformat(),
+            "name":current_user.name,
+            "email":current_user.email
+        }],
+        "UserAddressInformation":address_info,
+        "UserOrderInformation":order_info
+    }
+
+    html_data = json.dumps(output_data)
+
+    # Create download
+    path = os.path.join(app.root_path, app.config['DL_FOLDER'])
+    filename = "user_" + str(current_user.id) + "_" + str(time.time()) + ".html"
+    f = open(path + "/" + filename, "w+")
+    f.write(html_data)
+    f.close()
+
+    return send_from_directory(directory=path, filename=filename)
 
 @app.route('/logout')
 def logout():
