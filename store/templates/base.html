@@ -67,6 +67,9 @@
 		{% block content %}
 		{% endblock %}
 		</main>
+
+		<!-- Run JS code here as to not block page rendering -->
+		<script src="{{ url_for('static', filename='js/default.js') }}" type="text/javascript"></script>
 	
 	</body>
 </html>

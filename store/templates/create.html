@@ -10,19 +10,24 @@
 			{% for error in form.name.errors %}<span class="error_message">[{{ error }}]</span>{% endfor %}
 
   			{{ form.name.label }}
+			<span role="tooltip" for="name">Your name must be 1 or more characters long</span>
 			{{ form.name }}
 
 			{{ form.email.label }}
+			<span role="tooltip" for="email">Email should match the format: john@gmail.com</span>
 			{{ form.email }}
 
   			{{ form.password.label }}
+			<span role="tooltip" for="password">Your password must be between {{ password_requirements.min }} and {{ password_requirements.max }} characters.</span>
 			{{ form.password }}
 
 			{{ form.confirm_password.label }}
+			<span role="tooltip" for="confirm_password">Your password should match the password above</span>
 			{{ form.confirm_password }}
 
   			<input type="submit" value="Create Account">
 			<span>Already have an account? <a href="{{ url_for('login') }}">Login here!</a></span>
+			Need help? <a href="#" id="show_all_help">Show all help messages</a>
 		</form>
 	</section>
 {% endblock content %}

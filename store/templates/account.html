@@ -35,6 +35,11 @@
 				{{ update_password.confirm_new_password.label }}
 				{{ update_password.confirm_new_password }}
 
+				<span>
+					Your new password must be between {{ password_requirements.min }} and {{ password_requirements.max }} characters.
+				</span>
+				<br />
+
 				<input type="submit" value="Update Password" />
 			</form>
 		</fieldset>

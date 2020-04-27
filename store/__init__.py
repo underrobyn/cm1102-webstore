@@ -14,7 +14,7 @@ app.config['SQLALCHEMY_POOL_RECYCLE'] = 90
 
 @app.context_processor
 def inject_globals():
-    return dict(store_name=c.store_name)
+    return dict(store_name=c.store_name, password_requirements=c.password_req)
 
 
 db = SQLAlchemy(app)
