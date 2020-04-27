@@ -15,9 +15,6 @@
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/solid.min.css') }}" />
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/fontawesome.min.css') }}" />
 
-		<!-- Site JS -->
-		<script src="{{ url_for('static', filename='js/default.js') }}" type="text/javascript"></script>
-
 	</head>
 	<body>
 	
@@ -67,6 +64,9 @@
 		{% block content %}
 		{% endblock %}
 		</main>
+
+		<!-- Run JS code here as to not block page rendering -->
+		<script src="{{ url_for('static', filename='js/default.js') }}" type="text/javascript"></script>
 	
 	</body>
 </html>
