@@ -171,6 +171,13 @@ form input[type="submit"] {
 	border-radius: 0;
 }
 
+form textarea {
+	width: calc(100% - 0.5rem);
+	height:25vh;
+	padding: 0.25rem;
+	margin: 0 0 1rem 0;
+}
+
 form span[role='tooltip'] {
 	display:none;
 	background-color: #1a1a1a;
@@ -254,7 +261,7 @@ section.sidebar fieldset {
 }
 
 @media screen and (max-width: 768px) {
-	section.form {
+	section.center_form {
 		width: 80%;
 		margin: 3% 10%;
 	}
@@ -281,14 +288,14 @@ section.sidebar fieldset {
 }
 
 @media screen and (max-width: 648px) {
-	section.form {
+	section.center_form {
 		width: 90%;
 		margin: 3% 5%;
 	}
 }
 
 @media screen and (max-width: 440px) {
-	section.form {
+	section.center_form {
 		width: 95%;
 		margin: 3% 2.5%;
 	}

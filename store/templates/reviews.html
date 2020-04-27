@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+{% block content %}
+	<section class="main">
+		<h1>Reviews for {{ product.name }}</h1>
+		{% if reviews|length > 0 %}
+			<ul>
+			{% for review in reviews %}
+				<hr>
+				<h3>review.review</h3>
+			{% endfor %}
+			</ul>
+		<hr>
+		{% else %}
+			<h2>No reviews for this item</h2>
+		{% endif %}
+	</section>
+
+	<section class="sidebar">
+		<fieldset>
+			<legend>Leave a Review</legend>
+			<form method="POST" action="{{ url_for('reviews', product_id=product.id) }}">
+				{{ add_review.csrf_token }}
+
+				{{ add_review.rating.label }}
+				{{ add_review.rating }}
+
+				{{ add_review.review.label }}
+				{{ add_review.review }}
+
+				{{ add_review.submit }}
+			</form>
+		</fieldset>
+	</section>
+{% endblock content %}

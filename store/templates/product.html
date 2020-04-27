@@ -5,6 +5,8 @@
 {% block content %}
 	<section>
 		<h1>Product page - {{ product_id }}</h1>
+
+		<a class="button" href="{{ url_for('reviews', product_id=product_id) }}">Reviews</a>
 	</section>
 
 	<section class="form">

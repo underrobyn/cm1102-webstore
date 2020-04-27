@@ -4,9 +4,10 @@ from sqlalchemy import create_engine
 
 from store import app, db, login_manager
 import flask_sqlalchemy, os, time, json
-from store.models import User, Products, Address, Basket, BasketItems, Billing, BillingAddress, Orders, OrderProducts
+from store.models import User, Products, Address, Basket, BasketItems, Billing, BillingAddress, Orders, OrderProducts, \
+	ProductReviews
 from store.forms import CreateUserForm, LoginUserForm, UpdateEmailForm, UpdatePasswordForm, AddToCart, AddAddressForm, \
-	DeleteAccountForm, DownloadDataForm, InputBillingForm, delCart
+	DeleteAccountForm, DownloadDataForm, InputBillingForm, ProductReviewForm, delCart
 
 
 # App routes
@@ -187,6 +188,15 @@ def product(product_id):
 	return render_template('product.html', product_id=product_id, add_cart=cart_form, title='Product Name here')
 
 
+@app.route('/reviews/<int:product_id>', methods=['GET', 'POST'])
+def reviews(product_id):
+	product_info = Products.query.filter_by(id=product_id).first()
+	reviews = ProductReviews.query.filter_by(product_id=product_id).all()
+	add_review_form = ProductReviewForm()
+
+	return render_template('reviews.html', product=product_info, reviews=reviews, add_review=add_review_form, title='Reviews for ' + product_info.name)
+
+
 # Account system routes
 @login_manager.unauthorized_handler
 def unauthorized():
@@ -349,7 +359,7 @@ def billing():
 		remove_id = request.args.get('remove')
 		address_data = Address.query.filter_by(id=remove_id).first()
 
-		# Chekc the address exists
+		# Check the address exists
 		if not address_data:
 			flash("You cannot delete that address.")
 			return redirect(url_for("billing"))

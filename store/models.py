@@ -88,6 +88,14 @@ class Orders(db.Model):
 	billing_id = db.Column(db.Integer, db.ForeignKey('billing_address.id'), nullable=False)
 
 
+class ProductReviews(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+	rating = db.Column(db.Integer, default=1, nullable=False)
+	review = db.Column(db.Text, default="This user did not leave a review", nullable=False)
+
+
 class Basket(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
