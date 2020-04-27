@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, IntegerField, SelectField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, IntegerField, SelectField, BooleanField, DecimalField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Regexp, NumberRange
 from store.config import password_req
 import re
@@ -70,3 +70,8 @@ class InputBillingForm(FlaskForm):
 	card_end = StringField('Card End (e.g. "12/34")', validators=[DataRequired()])
 	submit = SubmitField("Place Order")
 
+
+class ProductReviewForm(FlaskForm):
+	rating = DecimalField('Rating (0 - 5 stars)', validators=[NumberRange(min=0, max=5, message='Review between 0 and 5 stars')])
+	review = TextAreaField('Your review', validators=[Length(min=0, max=2000)])
+	submit = SubmitField('Leave Review')
