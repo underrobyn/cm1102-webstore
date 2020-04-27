@@ -9,10 +9,11 @@
 			<ul>
 			{% for key, value in cart.items() %}
 				<hr>
-				<h3>Item Name: {{ key }}</h3>
-				<h5>Quantity: {{ value[0] }}</h5>
-				<h5>Price: £{{ value[1] }}</h5>
-				<h5>Subtotal: £{{ value[2] }}</h5>
+				<h3>Item Name: {{ value[0] }}</h3>
+				<h5>Quantity: {{ value[1] }}</h5>
+				<h5>Price: £{{ value[2] }}</h5>
+				<h5>Subtotal: £{{ value[3] }}</h5>
+				<a href="{{ url_for('basket', deleteitem=key) }}">(Delete)</a> 
 			{% endfor %}
 			</ul>
 		<hr>
