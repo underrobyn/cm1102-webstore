@@ -147,33 +147,36 @@ def checkout():
 
 	if request.method == "POST":
 		if form.validate_on_submit():
-			# Add card to billing card table
-			new_billing = Billing(
-				card_number=form.card_number.data,
-				card_cvc=form.card_cvc.data,
-				card_end=form.card_end.data
-			)
-			db.session.add(new_billing)
-			db.session.flush()
+			if len(form.card_number.data) != 16 or len(form.card_cvc.data) != 3 or len(form.card_end.data) != 5:
+				flash('Invalid card information entered. Please enter card information in the format shown')
+			else:
+				# Add card to billing card table
+				new_billing = Billing(
+					card_number=form.card_number.data,
+					card_cvc=form.card_cvc.data,
+					card_end=form.card_end.data
+				)
+				db.session.add(new_billing)
+				db.session.flush()
 
-			# Add billing address
-			new_billingaddr = BillingAddress(
-				billing_id=new_billing.id,
-				address_id=request.form.get('billing_addr')
-			)
-			db.session.add(new_billingaddr)
-			db.session.flush()
+				# Add billing address
+				new_billingaddr = BillingAddress(
+					billing_id=new_billing.id,
+					address_id=request.form.get('billing_addr')
+				)
+				db.session.add(new_billingaddr)
+				db.session.flush()
 
-			new_order = Orders(
-				delivery_address_id=request.form.get('delivery_addr'),
-				billing_id=new_billingaddr.id
-			)
-			db.session.add(new_order)
-			db.session.commit()
+				new_order = Orders(
+					delivery_address_id=request.form.get('delivery_addr'),
+					billing_id=new_billingaddr.id
+				)
+				db.session.add(new_order)
+				db.session.commit()
 
-			flash('Order has been created.')
+				flash('Order has been placed. Thank you for shopping!')
 
-			return redirect(url_for('homepage'))
+				return redirect(url_for('home'))
 
 	return render_template('checkout.html', addresses=addresses, billing=form, total=total, title='Checkout')
 

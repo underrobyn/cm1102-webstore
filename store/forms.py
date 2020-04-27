@@ -65,8 +65,8 @@ class DownloadDataForm(FlaskForm):
 
 
 class InputBillingForm(FlaskForm):
-	card_number = StringField('Card Number', validators=[DataRequired(), Length(16)])
-	card_cvc = StringField('Card CVC', validators=[DataRequired(), Length(3)])
-	card_end = StringField('Card End', validators=[DataRequired(), Length(5)])
+	card_number = StringField('Card Number (e.g. "1234567891012345")', validators=[DataRequired()])
+	card_cvc = StringField('Card CVC (e.g. "123")', validators=[DataRequired()])
+	card_end = StringField('Card End (e.g. "12/34")', validators=[DataRequired()])
 	submit = SubmitField("Place Order")
 
