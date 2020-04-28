@@ -90,6 +90,7 @@ class Orders(db.Model):
 
 class ProductReviews(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
+	time_added = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 	product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 	rating = db.Column(db.Integer, default=1, nullable=False)

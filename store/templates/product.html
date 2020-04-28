@@ -3,23 +3,25 @@
 {% block title %}{{ title }}{% endblock title %}
 
 {% block content %}
-	<section>
-		<h1>Product page - {{ product_id }}</h1>
+	<section class="main padding">
+		<h1>Product page - {{ product.name }}</h1>
 
-		<a class="button" href="{{ url_for('reviews', product_id=product_id) }}">Reviews</a>
+		<a class="button" href="{{ url_for('reviews', product_id=product.id) }}">({{ reviews|length }}) Product Reviews</a>
 	</section>
 
-	<section class="form">
-		<hr>
-		<form method="POST" action="{{ url_for('AddCart') }}">
-			{{ add_cart.csrf_token }}
+	<section class="sidebar">
+		<fieldset>
+			<legend>Add item to cart</legend>
+			<form method="POST" action="{{ url_for('AddCart') }}">
+				{{ add_cart.csrf_token }}
 
-		  	<input type="hidden" name="product_id" value="{{ product_id }}">
+				<input type="hidden" name="product_id" value="{{ product.id }}">
 
-			{{ add_cart.quantity.label }}
-			{{ add_cart.quantity }}
+				{{ add_cart.quantity.label }}
+				{{ add_cart.quantity }}
 
-			<input type="submit" value="Add to cart" />
-		</form>
+				<input type="submit" value="Add to cart" />
+			</form>
+		</fieldset>
 	</section>
 {% endblock content %}
