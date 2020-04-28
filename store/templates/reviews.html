@@ -3,16 +3,26 @@
 {% block title %}{{ title }}{% endblock title %}
 
 {% block content %}
-	<section class="main">
+	<section class="main padding">
 		<h1>Reviews for {{ product.name }}</h1>
+		<a href="{{ url_for('product', product_id=product.id) }}" class="button">Back to product information</a>
 		{% if reviews|length > 0 %}
 			<ul>
 			{% for review in reviews %}
 				<hr>
-				<h3>review.review</h3>
+				<h2>[{{ review.rating }} / 5 stars] {{ review.reviewer }} at {{ review.time }}</h2>
+				{% if review.purchased %}
+					<em>This user has purchased the product in the past</em>
+				{% else %}
+					<em>We cannot verify this user has purchased this product.</em>
+				{% endif %}
+				{% if review.curr_user %}
+					This is your review -
+					<a href="{{ url_for('reviews', product_id=product.id, remove=review.id) }}">(Delete)</a>
+				{% endif %}
+				<p>{{ review.review }}</p>
 			{% endfor %}
 			</ul>
-		<hr>
 		{% else %}
 			<h2>No reviews for this item</h2>
 		{% endif %}
@@ -21,17 +31,21 @@
 	<section class="sidebar">
 		<fieldset>
 			<legend>Leave a Review</legend>
-			<form method="POST" action="{{ url_for('reviews', product_id=product.id) }}">
-				{{ add_review.csrf_token }}
+			{% if current_user.is_authenticated %}
+				<form method="POST" action="{{ url_for('reviews', product_id=product.id) }}">
+					{{ add_review.csrf_token }}
 
-				{{ add_review.rating.label }}
-				{{ add_review.rating }}
+					{{ add_review.rating.label }}
+					{{ add_review.rating }}
 
-				{{ add_review.review.label }}
-				{{ add_review.review }}
+					{{ add_review.review.label }}
+					{{ add_review.review }}
 
-				{{ add_review.submit }}
-			</form>
+					{{ add_review.submit }}
+				</form>
+			{% else %}
+				<a href="{{ url_for('login') }}">Login</a> to leave a review
+			{% endif %}
 		</fieldset>
 	</section>
 {% endblock content %}

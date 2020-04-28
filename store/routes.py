@@ -57,6 +57,9 @@ def AddCart():
 			print(e)
 			flash("Item not added to basket")
 			return redirect(url_for("basket"))
+	else:
+		flash("Item not added to basket")
+		return redirect(url_for("basket"))
 
 
 @app.route('/basket', methods=['GET', 'POST'])
@@ -86,7 +89,7 @@ def basket():
 	shoppingDict = {}
 	basket_data = Basket.query.filter_by(user_id=current_user.id).first()
 	items = BasketItems.query.filter_by(basket_id=basket_data.id).all()
-	
+
 	# Create dict for jinja
 	for item in items:
 		product = Products.query.filter_by(id=item.product_id).first()
@@ -171,16 +174,72 @@ def checkout():
 @app.route('/product/<int:product_id>', methods=['GET'])
 def product(product_id):
 	cart_form = AddToCart()
-	return render_template('product.html', product_id=product_id, add_cart=cart_form, title='Product Name here')
+	product_reviews = ProductReviews.query.filter_by(product_id=product_id).all()
+	product_info = Products.query.filter_by(id=product_id).first()
+
+	return render_template('product.html', product=product_info, reviews=product_reviews, add_cart=cart_form, title='Product Name here')
 
 
 @app.route('/reviews/<int:product_id>', methods=['GET', 'POST'])
 def reviews(product_id):
 	product_info = Products.query.filter_by(id=product_id).first()
-	reviews = ProductReviews.query.filter_by(product_id=product_id).all()
 	add_review_form = ProductReviewForm()
 
-	return render_template('reviews.html', product=product_info, reviews=reviews, add_review=add_review_form,
+	if add_review_form.validate_on_submit():
+		new_review = ProductReviews(
+			rating=add_review_form.rating.data,
+			review=add_review_form.review.data,
+			product_id=product_id,
+			user_id=current_user.id
+		)
+		db.session.add(new_review)
+		db.session.commit()
+
+		flash("Your review of " + product_info.name + " has been added!")
+
+	# Check if the user wishes to remove one of their reviews
+	if request.args.get('remove'):
+		remove_id = request.args.get('remove')
+		review_data = ProductReviews.query.filter_by(id=remove_id).first()
+
+		# Check the address exists
+		if not review_data:
+			flash("You cannot delete that review")
+
+		# Check that this address belongs to the logged in user
+		elif review_data.user_id != current_user.id:
+			flash("You cannot delete that review.")
+
+		else:
+			db.session.delete(review_data)
+			db.session.commit()
+			flash("Removed your review of " + product_info.name)
+
+	review_data = []
+	product_reviews = ProductReviews.query.filter_by(product_id=product_id).all()
+	for review in product_reviews:
+		user_info = User.query.filter_by(id=review.user_id).first()
+
+		# Check if the user has purchased this product in the past
+		user_purchased_product = False
+		user_orders = db.session.query(Orders).join(Address).filter(Address.user_id == review.user_id)
+		for order in user_orders:
+			curr_order = OrderProducts.query.filter_by(product_id=review.product_id, order_id=order.id).all()
+			if curr_order:
+				user_purchased_product = True
+				break
+
+		review_data.append({
+			"id": review.id,
+			"reviewer": user_info.name,
+			"curr_user": user_info.id == current_user.id,
+			"time": review.time_added.strftime("%Y/%m/%d, %H:%M"),
+			"rating": review.rating,
+			"review": review.review,
+			"purchased": user_purchased_product
+		})
+
+	return render_template('reviews.html', product=product_info, reviews=review_data, add_review=add_review_form,
 	                       title='Reviews for ' + product_info.name)
 
 
