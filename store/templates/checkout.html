@@ -38,12 +38,15 @@
 			{{ billing.csrf_token }}
 
 			{{ billing.card_number.label }}
+            <span role="tooltip" for="card_number">Must be 16 characters long - e.g. "1234567891012345"</span>
 			{{ billing.card_number }}
 
 			{{ billing.card_cvc.label }}
+            <span role="tooltip" for="card_cvc">Must be 3 characters long - e.g. "123"</span>
 			{{ billing.card_cvc }}
 
 			{{ billing.card_end.label }}
+            <span role="tooltip" for="card_end">Must be 5 characters long - e.g. "12/34"</span>
 			{{ billing.card_end }}
 
 			<input type="submit" value="Place Order">
