@@ -7,7 +7,7 @@ import flask_sqlalchemy, os, time, json
 from store.models import User, Products, Address, Basket, BasketItems, Billing, BillingAddress, Orders, OrderProducts, \
 	ProductReviews
 from store.forms import CreateUserForm, LoginUserForm, UpdateEmailForm, UpdatePasswordForm, AddToCart, AddAddressForm, \
-	DeleteAccountForm, DownloadDataForm, InputBillingForm, ProductReviewForm, delCart
+	DeleteAccountForm, DownloadDataForm, InputBillingForm, ProductReviewForm, DeleteFromCart
 
 
 # App routes
@@ -41,8 +41,9 @@ def AddCart():
 				return redirect(request.referrer)
 
 			basket = Basket.query.filter_by(user_id=current_user.id).first()
+
 			# Adding product to cart if quantity <250
-			if quantity and quantity > 0 and quantity <= 250:
+			if quantity and 0 < quantity <= 250:
 				basket_item = BasketItems(basket_id=basket.id, product_id=product_id, quantity=quantity)
 				db.session.add(basket_item)
 				db.session.commit()
@@ -65,7 +66,8 @@ def AddCart():
 @app.route('/basket', methods=['GET', 'POST'])
 @login_required
 def basket():
-	delete_form = delCart()
+	delete_form = DeleteFromCart()
+
 	# Clear all Cart
 	if request.method == 'POST':
 		if delete_form.validate_on_submit():
@@ -104,10 +106,12 @@ def basket():
 
 	# Calculate total
 	total = 0
+	item_count = 0
 	for item in shoppingDict.values():
 		total = total + item[3]
+		item_count = item_count + item[1]
 
-	return render_template('basket.html', cart=shoppingDict, products=products, form=delete_form, totalprice=total)
+	return render_template('basket.html', cart=shoppingDict, products=products, form=delete_form, totalprice=total, totalitems=item_count)
 
 
 @app.route('/checkout', methods=['GET', 'POST'])
@@ -525,11 +529,6 @@ def logout():
 
 
 # Error routes
-@app.errorhandler(403)
-def forbidden(msg):
-	return make_response(render_template('error_403.html', msg=msg, title='403 Forbidden'), 403)
-
-
 @app.errorhandler(404)
 def not_found(msg):
 	return make_response(render_template('error_404.html', msg=msg, title='404 Not Found'), 404)

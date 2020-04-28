@@ -22,6 +22,15 @@ h3 {
 	font-size: 1.9rem;
 }
 
+h4, h5, h6 {
+	margin: 0.3rem 0;
+	font-weight:600;
+}
+
+h5 {
+	font-size: 0.95rem;
+}
+
 .center {
 	text-align: center;
 }
@@ -266,6 +275,16 @@ section.sidebar fieldset {
 		margin: 3% 10%;
 	}
 
+	section.main, section.sidebar {
+		width:50%;
+		margin:1% 0;
+	}
+
+	section.padding {
+		width:48%;
+		padding:0 1%;
+	}
+
 	nav {
 		border-bottom: none;
 	}
@@ -291,6 +310,11 @@ section.sidebar fieldset {
 	section.center_form {
 		width: 90%;
 		margin: 3% 5%;
+	}
+
+	section.main, section.sidebar {
+		width:98%;
+		margin:1% 0;
 	}
 }
 
