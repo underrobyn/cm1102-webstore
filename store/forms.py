@@ -42,33 +42,36 @@ class UpdateEmailForm(FlaskForm):
 
 class AddToCart(FlaskForm):
 	quantity = IntegerField('Quantity: ', validators=[DataRequired()])
-	submit = SubmitField("Add")
+	submit = SubmitField('Add')
 
 
 class UpdatePasswordForm(FlaskForm):
 	password = PasswordField('Current Password', validators=[DataRequired(), Length(min=password_req["min"], max=password_req["max"])])
 	new_password = PasswordField('New Password', validators=[DataRequired(), Length(min=password_req["min"], max=password_req["max"])])
 	confirm_new_password = PasswordField('Confirm New Password', validators=[DataRequired(), EqualTo('new_password')])
+	submit = SubmitField('Update Password')
 
 
-class delCart(FlaskForm):
-	delete = SubmitField("Clear Cart")
+class DeleteFromCart(FlaskForm):
+	delete = SubmitField('Clear Cart')
 
 
 class DeleteAccountForm(FlaskForm):
 	password = PasswordField('Account Password', validators=[DataRequired(), Length(min=password_req["min"], max=password_req["max"])])
-	confirm_delete = BooleanField("Are you sure?", validators=[DataRequired()])
+	confirm_delete = BooleanField('Are you sure?', validators=[DataRequired()])
+	submit = SubmitField('Delete Account')
 
 
 class DownloadDataForm(FlaskForm):
 	password = PasswordField('Account Password', validators=[DataRequired(), Length(min=password_req["min"], max=password_req["max"])])
+	submit = SubmitField('Download Data')
 
 
 class InputBillingForm(FlaskForm):
 	card_number = StringField('Card Number (e.g. "1234567891012345")', validators=[DataRequired()])
 	card_cvc = StringField('Card CVC (e.g. "123")', validators=[DataRequired()])
 	card_end = StringField('Card End (e.g. "12/34")', validators=[DataRequired()])
-	submit = SubmitField("Place Order")
+	submit = SubmitField('Place Order')
 
 
 class ProductReviewForm(FlaskForm):

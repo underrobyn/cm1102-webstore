@@ -17,18 +17,21 @@
 			{% endfor %}
 			</ul>
 		<hr>
-		<h2>Total: £{{ totalprice }}</h2>
 		{% else %}
 			<h2>No items in basket</h2>
 		{% endif %}
-	</section>
-	<section class="form">
 		<form method="POST" action="{{ url_for('basket') }}">
 			{{ form.csrf_token }}
 
 			<input type="submit" value="Clear Cart" />
 		</form>
-		<br />
-		<a href="{{ url_for('checkout') }}" class="button">Checkout</a>
+	</section>
+	<section class="sidebar">
+		<fieldset>
+			<h2>Total: £{{ totalprice }}</h2>
+			<h3>Items: {{ totalitems }}</h3>
+			<br />
+			<a href="{{ url_for('checkout') }}" class="button">Checkout</a>
+		</fieldset>
 	</section>
 {% endblock content %}
