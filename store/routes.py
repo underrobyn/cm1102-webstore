@@ -110,7 +110,9 @@ def basket():
 		total = total + item[3]
 		item_count = item_count + item[1]
 
-	return render_template('basket.html', cart=shoppingDict, products=products, form=delete_form, totalprice=total, totalitems=item_count)
+	page_title = '[%s] Basket' % item_count
+
+	return render_template('basket.html', title=page_title, cart=shoppingDict, products=products, form=delete_form, totalprice=total, totalitems=item_count)
 
 
 @app.route('/checkout', methods=['GET', 'POST'])

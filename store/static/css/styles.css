@@ -228,7 +228,7 @@ fieldset legend {
 
 form label, fieldset legend {
 	display: block;
-	margin: 1.5rem 0 0 0;
+	margin: 1.25rem 0 0 0;
 	text-transform: uppercase;
 	font-weight: 900;
 }
@@ -268,6 +268,23 @@ section.sidebar fieldset {
 	margin:0 2vw 0 0;
 }
 
+
+div#product_gallery {
+	display:flex;
+	flex-direction:row;
+	flex-wrap:wrap;
+}
+
+div.product {
+	text-align:center;
+	flex:1 0 30%;
+}
+
+div.product img {
+	width:100%;
+	max-height:30vh;
+}
+
 .basket_item {
 	display: flex;
 	flex-direction: row;
@@ -275,7 +292,7 @@ section.sidebar fieldset {
 }
 
 .basket_item div.info {
-	flex:1 0;
+	flex:3 0;
 	text-align:center;
 }
 
