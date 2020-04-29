@@ -67,12 +67,12 @@ def AddCart():
 @login_required
 def basket():
 	delete_form = DeleteFromCart()
+	basket_data = Basket.query.filter_by(user_id=current_user.id).first()
 
 	# Clear all Cart
 	if request.method == 'POST':
 		if delete_form.validate_on_submit():
-			basketdata = Basket.query.filter_by(user_id=current_user.id).first()
-			basket_items = BasketItems.query.filter_by(basket_id=basketdata.id).all()
+			basket_items = BasketItems.query.filter_by(basket_id=basket_data.id).all()
 			for item in basket_items:
 				db.session.delete(item)
 			db.session.commit()
@@ -80,16 +80,15 @@ def basket():
 			flash("Shopping Basket Cleared!")
 
 	# Delete individual item
-	if request.args.get('deleteitem'):
-		productID = request.args.get('deleteitem')
-		basketproduct = BasketItems.query.filter_by(product_id=productID).first()
-		db.session.delete(basketproduct)
+	if request.args.get('delete_item'):
+		basket_item_id = request.args.get('delete_item')
+		basket_product = BasketItems.query.filter_by(id=basket_item_id, basket_id=basket_data.id).first()
+		db.session.delete(basket_product)
 		db.session.commit()
 		flash("Item removed from Basket!")
 
 	products = Products.query.all()
 	shoppingDict = {}
-	basket_data = Basket.query.filter_by(user_id=current_user.id).first()
 	items = BasketItems.query.filter_by(basket_id=basket_data.id).all()
 
 	# Create dict for jinja
@@ -99,10 +98,10 @@ def basket():
 			list = shoppingDict[product.id]
 			quant = int(list[0]) + item.quantity
 			subtotal = int(quant * product.price)
-			shoppingDict[product.id] = [product.name, quant, product.price, subtotal]
+			shoppingDict[product.id] = [product.name, quant, product.price, subtotal, product.image, item.id]
 		else:
 			subtotal = int(item.quantity * product.price)
-			shoppingDict[product.id] = [product.name, item.quantity, product.price, subtotal]
+			shoppingDict[product.id] = [product.name, item.quantity, product.price, subtotal, product.image, item.id]
 
 	# Calculate total
 	total = 0
