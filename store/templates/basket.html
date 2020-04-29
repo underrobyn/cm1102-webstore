@@ -9,7 +9,7 @@
 			<ul>
 			{% for key, value in cart.items() %}
 				<hr>
-				<h3>Item Name: {{ value[0] }}</h3>
+				<a href="{{ url_for('product', product_id=key) }}"><h3>Item Name: {{ value[0] }}</h3></a>
 				<h5>Quantity: {{ value[1] }}</h5>
 				<h5>Price: £{{ value[2] }}</h5>
 				<h5>Subtotal: £{{ value[3] }}</h5>
