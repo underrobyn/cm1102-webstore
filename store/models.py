@@ -84,6 +84,7 @@ class OrderProducts(db.Model):
 
 class Orders(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
+	time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 	delivery_address_id = db.Column(db.Integer, db.ForeignKey('address.id'), nullable=False)
 	billing_id = db.Column(db.Integer, db.ForeignKey('billing_address.id'), nullable=False)
 
