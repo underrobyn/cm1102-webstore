@@ -9,12 +9,19 @@
 			<ul>
 			{% for key, value in cart.items() %}
 				<hr>
-				<h3>Item Name: {{ value[0] }}</h3>
-				<h4>Quantity: {{ value[1] }}</h4>
-				<h4>Price: £{{ value[2] }}</h4>
-				<h4>Subtotal: £{{ value[3] }}</h4>
+				<div class="basket_item">
+					<div class="image">
+						<img src="{{ url_for('static', filename='images/' + value[4]) }}" />
+					</div>
+					<div class="info">
+						<h3>Item Name: {{ value[0] }}</h3>
+						<h4>Quantity: {{ value[1] }}</h4>
+						<h4>Price: £{{ value[2] }}</h4>
+						<h4>Subtotal: £{{ value[3] }}</h4>
+					</div>
+				</div>
 				<a class="small_button button" href="{{ url_for('product', product_id=key) }}">View Product Listing</a>
-				<a class="small_button button" href="{{ url_for('basket', deleteitem=key) }}">Remove Item</a>
+				<a class="small_button button" href="{{ url_for('basket', delete_item=value[5]) }}">Remove Item</a>
 			{% endfor %}
 			</ul>
 		<hr>

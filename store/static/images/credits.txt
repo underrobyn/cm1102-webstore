@@ -1,0 +1,3 @@
+sock_designer.jpg: https://pixabay.com/photos/datang-sock-black-stripes-woman-1495918/
+sock_regular.jpg: https://pixabay.com/photos/sock-black-stripes-woman-1495920/
+sock_vintage.jpg: https://pixabay.com/photos/socks-two-grey-deep-wool-woolen-1157528/

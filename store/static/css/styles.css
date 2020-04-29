@@ -268,6 +268,25 @@ section.sidebar fieldset {
 	margin:0 2vw 0 0;
 }
 
+.basket_item {
+	display: flex;
+	flex-direction: row;
+	width:100%;
+}
+
+.basket_item div.info {
+	flex:1 0;
+	text-align:center;
+}
+
+.basket_item div.image {
+	flex:1 0;
+}
+
+.basket_item div.image img {
+	max-width:100%;
+}
+
 @media screen and (max-width: 1280px) {
 	section.form {
 		width: 60%;
