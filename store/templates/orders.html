@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+{% block content %}
+	<section class="main padding">
+		<h1>Order History</h1>
+		{% if orders|length > 0 %}
+			<ul>
+			{% for key, value in orders.items() %}
+				<hr>
+				<h3>{{ value['time'] }}</h3>
+				<ul>
+					{% for product in value['products'] %}
+						<li>{{ product['quantity'] }} x {{ product['name'] }} £{{ product['total'] }} (£{{ product['price'] }} each)</li>
+					{% endfor %}
+				</ul>
+				<h4>Total: £{{ value['total'] }}</h4>
+			{% endfor %}
+			</ul>
+		<hr>
+		{% else %}
+			<h2>You haven't placed any orders</h2>
+		{% endif %}
+	</section>
+{% endblock content %}

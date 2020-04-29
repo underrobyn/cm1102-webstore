@@ -167,10 +167,21 @@ def checkout():
 					billing_id=new_billingaddr.id
 				)
 				db.session.add(new_order)
+				db.session.flush()
+
+				for basket_item in item_list:
+					add_product_order = OrderProducts(
+						order_id=new_order.id,
+						product_id=basket_item.product_id,
+						quantity=basket_item.quantity
+					)
+					db.session.add(add_product_order)
+					db.session.delete(basket_item)
+					db.session.flush()
+
 				db.session.commit()
 
 				flash('Order has been placed. Thank you for shopping!')
-
 				return redirect(url_for('home'))
 
 	return render_template('checkout.html', addresses=addresses, billing=form, total=total, title='Checkout')
@@ -448,6 +459,37 @@ def billing():
 
 	return render_template('billing.html', title='Billing Information', add_address=address_form,
 	                       address_list=addresses)
+
+
+@app.route('/orders', methods=['GET'])
+def orders():
+	order_dict = {}
+
+	user_orders = db.session.query(Orders).join(Address).filter(Address.user_id == current_user.id)
+	for order in user_orders:
+		products = []
+		total = 0
+
+		curr_order = OrderProducts.query.filter_by(order_id=order.id).all()
+		for order_product in curr_order:
+			curr_product = Products.query.filter_by(id=order_product.product_id).first()
+			products.append({
+				"id": order_product.product_id,
+				"name": curr_product.name,
+				"price": curr_product.price,
+				"quantity": order_product.quantity,
+				"total": order_product.quantity * curr_product.price,
+				"image": curr_product.image
+			})
+			total = total + curr_product.price * order_product.quantity
+
+		order_dict[order.id] = {
+			"products": products,
+			"total": total,
+			"time": order.time
+		}
+
+	return render_template('orders.html', title='Order History', orders=order_dict)
 
 
 @app.route('/gdpr_download', methods=['POST'])
