@@ -2,7 +2,7 @@ CM1102 - Online Shop Coursework.
 
 This is submission of Group 5
 
-1. URL of our website:
+1. URL of our website: http://team5-webstore-team5-webstore.apps.cs.cf.ac.uk/
 
 2. Admin login details:
 
