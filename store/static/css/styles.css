@@ -31,8 +31,21 @@ h5 {
 	font-size: 0.95rem;
 }
 
+a {
+	color: #008cd5;
+	font-weight:900;
+}
+
 .center {
 	text-align: center;
+}
+
+a.button.small_button {
+	height: 2rem;
+	padding: 0.2rem 0.3rem;
+	font-size: 1.25rem;
+	font-weight: 600;
+	line-height: 2rem;
 }
 
 a.button {
