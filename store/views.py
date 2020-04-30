@@ -10,7 +10,8 @@ class AdminView(ModelView):
 		if current_user.is_authenticated:
 			if current_user.get_id():
 				user = User.query.get(current_user.get_id())
-				return True
+				if user.permission_level > 1:
+					return True
 
 		return False
 
