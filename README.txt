@@ -18,7 +18,7 @@ Group Member 1:
 
 Group Member 2:
   1. Student number: 1901940
-  2. Email address:
+  2. Email address: harrism20@cardiff.ac.uk
   3. Responsible for the following functionality: Checkout pages
 
 Group Member 3:
