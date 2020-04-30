@@ -11,3 +11,4 @@ sunglasses_limited: https://www.pexels.com/photo/sunglasses-with-brown-frame-136
 sunglasses_designer: https://www.pexels.com/photo/close-up-of-rayban-sunglasses-249210/
 sunglasses: https://www.pexels.com/photo/blur-eyewear-fashion-glass-147641/
 boxers_limited.jpg: https://pixabay.com/photos/men-s-boxer-men-s-fashion-men-s-5020345/
+boxers_alt.jpg: https://pixabay.com/photos/men-s-fashion-men-s-inner-wear-5020343/
