@@ -17,56 +17,65 @@
 
 	</head>
 	<body>
-	
-		<nav>
-			<div id="search">
-				<form action="{{ url_for('home') }}" method="get">
-					<input type="search" id="site_search" name="search_products" placeholder="Search Products..." maxlength="150" />
-				</form>
-			</div>
-			<div id="actions">
-				<a href="{{ url_for('home') }}" title="Homepage">
-					<i class="fas fa-home"></i>
-				</a>
-				{% if current_user.is_authenticated %}
-				<a href="{{ url_for('account') }}" title="Your Account">
-					<i class="fas fa-user-circle"></i>
-				</a>
-				<a href="{{ url_for('logout') }}" title="Logout">
-					<i class="fas fa-sign-out-alt"></i>
-				</a>
-				<a href="{{ url_for('basket') }}" title="Shopping Basket">
-					<i class="fas fa-shopping-basket"></i>
-				</a>
-				{% else %}
-				<a href="{{ url_for('create') }}" title="Create Account">
-					<i class="fas fa-user-plus"></i>
-				</a>
-				<a href="{{ url_for('login') }}" title="Login">
-					<i class="fas fa-sign-in-alt"></i>
-				</a>
-				{% endif %}
-			</div>
-		</nav>
 
-		{% with messages = get_flashed_messages() %}
-		  	{% if messages %}
-			<div id="alerts" class="neutral">
-				<h3>Message from system:</h3>
-				<ul>
-				{% for message in messages %}
-					<li>{{ message }}</li>
-				{% endfor %}
-				</ul>
-				<a id="close_alert" class="button">Close</a>
-			</div>
-		  	{% endif %}
-		{% endwith %}
-		
-		<main>
-		{% block content %}
-		{% endblock %}
-		</main>
+		<div id="container">
+			<header id="banner">
+				<span id="store_name">{{ store_name }}</span>
+				<span id="contact">Contact Number:<br /> +44 39157 221888</span>
+			</header>
+
+			<!-- Navigation bar -->
+			<nav>
+				<div id="search">
+					<form action="{{ url_for('home') }}" method="get">
+						<input type="search" id="site_search" name="search_products" placeholder="Search Products..." maxlength="150" />
+					</form>
+				</div>
+				<div id="actions">
+					<a href="{{ url_for('home') }}" title="Homepage">
+						<i class="fas fa-home"></i>
+					</a>
+					{% if current_user.is_authenticated %}
+					<a href="{{ url_for('account') }}" title="Your Account">
+						<i class="fas fa-user-circle"></i>
+					</a>
+					<a href="{{ url_for('logout') }}" title="Logout">
+						<i class="fas fa-sign-out-alt"></i>
+					</a>
+					<a href="{{ url_for('basket') }}" title="Shopping Basket">
+						<i class="fas fa-shopping-basket"></i>
+					</a>
+					{% else %}
+					<a href="{{ url_for('create') }}" title="Create Account">
+						<i class="fas fa-user-plus"></i>
+					</a>
+					<a href="{{ url_for('login') }}" title="Login">
+						<i class="fas fa-sign-in-alt"></i>
+					</a>
+					{% endif %}
+				</div>
+			</nav>
+
+			{% with messages = get_flashed_messages() %}
+				{% if messages %}
+				<div id="alerts" class="neutral">
+					<h3>Message from system:</h3>
+					<ul>
+					{% for message in messages %}
+						<li>{{ message }}</li>
+					{% endfor %}
+					</ul>
+					<a id="close_alert" class="button">Close</a>
+				</div>
+				{% endif %}
+			{% endwith %}
+
+			<main>
+			{% block content %}
+			{% endblock %}
+			</main>
+
+		</div>
 
 		<!-- Run JS code here as to not block page rendering -->
 		<script src="{{ url_for('static', filename='js/default.js') }}" type="text/javascript"></script>
