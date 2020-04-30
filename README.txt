@@ -17,13 +17,13 @@ Group Member 1:
   3. Responsible for the following functionality: User Account functionality
 
 Group Member 2:
-  1. Student number:
+  1. Student number: 1901940
   2. Email address:
   3. Responsible for the following functionality: Checkout pages
 
 Group Member 3:
-  1. Student number:
-  2. Email address:
+  1. Student number: 1922926
+  2. Email address: thomasde8@cardiff.ac.uk
   3. Responsible for the following functionality: Shopping Basket
 
 Group Member 4:
