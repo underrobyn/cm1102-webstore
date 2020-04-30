@@ -6,7 +6,7 @@
 	<section class="main padding">
 		<h1>Product page - {{ product.name }}</h1>
 
-		<a class="button" href="{{ url_for('reviews', product_id=product.id) }}">({{ reviews|length }}) Product Reviews</a>
+		<!-- Put product information here -->
 	</section>
 
 	<section class="sidebar">
@@ -23,5 +23,7 @@
 				<input type="submit" value="Add to cart" />
 			</form>
 		</fieldset>
+
+		<a class="button" href="{{ url_for('reviews', product_id=product.id) }}">({{ reviews|length }}) Product Reviews</a>
 	</section>
 {% endblock content %}
