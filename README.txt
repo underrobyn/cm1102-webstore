@@ -6,8 +6,8 @@ This is submission of Group 5
 
 2. Admin login details:
 
-- Admin username:
-- Admin password:
+- Admin username: isla929@fake-email.com
+- Admin password: Password123
 
 3. Individual Responsibilities:
 
@@ -27,7 +27,7 @@ Group Member 3:
   3. Responsible for the following functionality: Shopping Basket
 
 Group Member 4:
-  1. Student number:
+  1. Student number: 1983692
   2. Email address:
   3. Responsible for the following functionality: Product Pages
 
