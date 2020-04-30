@@ -5,6 +5,7 @@ let tooltips = document.querySelectorAll('span[role="tooltip"]');
 let showAllTooltips = document.getElementById('show_all_help');
 let tooltipList = {};
 let forceShow = false;
+
 let tooltipEvents = {
 	'show':['mouseenter', 'focus', 'touchstart'],
 	'hide':['mouseleave', 'blur', 'touchend']
@@ -33,6 +34,7 @@ let performOverlayClose = function() {
 	overlayId.style.display = 'none';
 };
 
+// Assign events to the tooltips
 let assignTooltipOpen = function(label, tooltip) {
 	label.style.cursor = 'pointer';
 
@@ -54,6 +56,7 @@ let assignPageEvents = function() {
 		showAllTooltips.addEventListener('click', performShowTips, false);
 	}
 
+	// Loop through and activate each tooltip
 	for (let i = 0; i < tooltips.length; i++) {
 		let tooltip = tooltips[i];
 
