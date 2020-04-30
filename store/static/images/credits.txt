@@ -3,3 +3,10 @@ sock_regular.jpg: https://pixabay.com/photos/sock-black-stripes-woman-1495920/
 sock_vintage.jpg: https://pixabay.com/photos/socks-two-grey-deep-wool-woolen-1157528/
 tshirt.png: https://pixabay.com/photos/blank-tshirt-male-fashion-top-1886001/
 trousers.jpg: https://pixabay.com/photos/jeans-pants-style-man-worn-4050815/
+shoe_limited.jpg: https://pixabay.com/photos/shoe-canvas-sneakers-casual-1433925/
+shoe_leather.jpg: https://pixabay.com/photos/leather-shoe-shoe-smart-neat-3706748/
+shoe_regular.jpg: https://pixabay.com/vectors/chucks-converse-shoes-footwear-153310/
+sunglasses_limited: https://www.pexels.com/photo/sunglasses-with-brown-frame-1362558/
+sunglasses_designer: https://www.pexels.com/photo/close-up-of-rayban-sunglasses-249210/
+sunglasses: https://www.pexels.com/photo/blur-eyewear-fashion-glass-147641/
+
