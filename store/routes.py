@@ -395,7 +395,23 @@ def account():
 			# Delete user addresses
 			user_addresses = Address.query.filter_by(user_id=current_user.id).all()
 			for address in user_addresses:
+				user_orders = Orders.query.filter_by(delivery_address_id=address.id).all()
+				for order in user_orders:
+					user_order_products = OrderProducts.query.filter_by(order_id=order.id).all()
+					for order_product in user_order_products:
+						db.session.delete(order_product)
+						db.session.flush()
+
+					db.session.delete(order)
+					db.session.flush(user_orders)
+
+				user_billing_address = BillingAddress.query.filter_by(address_id=address.id).all()
+				for billing_address in user_billing_address:
+					db.session.delete(billing_address)
+					db.session.flush()
+
 				db.session.delete(address)
+
 			db.session.flush()
 
 			# Delete user account
