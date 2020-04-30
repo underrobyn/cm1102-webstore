@@ -68,6 +68,32 @@ a.button {
 	text-decoration:none;
 }
 
+table {
+	width: 100%;
+	text-align: center;
+	box-sizing:border-box;
+	border-spacing:0;
+	border-collapse:collapse;
+}
+
+tr th {
+	border-bottom:0.1rem solid #000;
+}
+
+table thead tr {
+	font-weight:900;
+	font-size:1.25rem;
+}
+
+table tbody tr {
+	font-size:1.1rem;
+	transition: 0.2s ease-in-out background-color;
+}
+
+table tbody tr:hover {
+	background-color:rgba(0,0,0,0.1);
+}
+
 /* Styles for main site & admin navigation bars */
 nav {
 	display: inline-block;
@@ -237,6 +263,13 @@ form span {
 	display: block;
 	width: 100%;
 	margin: 2rem 0 0 0;
+}
+
+span.thick {
+	display: block;
+	margin: 1rem 0;
+	text-transform: uppercase;
+	font-weight: 600;
 }
 
 section {

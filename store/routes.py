@@ -96,7 +96,7 @@ def basket():
 		product = Products.query.filter_by(id=item.product_id).first()
 		if product.id in shoppingDict.keys():
 			list = shoppingDict[product.id]
-			quant = int(list[0]) + item.quantity
+			quant = int(list[1]) + item.quantity
 			subtotal = int(quant * product.price)
 			shoppingDict[product.id] = [product.name, quant, product.price, subtotal, product.image, item.id]
 		else:
@@ -484,9 +484,10 @@ def orders():
 			total = total + curr_product.price * order_product.quantity
 
 		order_dict[order.id] = {
+			"id": order.id,
 			"products": products,
 			"total": total,
-			"time": order.time
+			"time": order.time.strftime("%Y/%m/%d, %H:%M"),
 		}
 
 	return render_template('orders.html', title='Order History', orders=order_dict)
