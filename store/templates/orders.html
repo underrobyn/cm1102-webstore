@@ -9,13 +9,32 @@
 			<ul>
 			{% for key, value in orders.items() %}
 				<hr>
-				<h3>{{ value['time'] }}</h3>
-				<ul>
-					{% for product in value['products'] %}
-						<li>{{ product['quantity'] }} x {{ product['name'] }} £{{ product['total'] }} (£{{ product['price'] }} each)</li>
-					{% endfor %}
-				</ul>
-				<h4>Total: £{{ value['total'] }}</h4>
+				<h3>Order #{{ value['id'] }} - {{ value['time'] }}</h3>
+				<table>
+					<thead>
+						<tr>
+							<th>Product Name</th>
+							<th>Product Price</th>
+							<th>Quantity</th>
+							<th>Total</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for product in value['products'] %}
+							<tr>
+								<td><a href="{{ url_for('product', product_id=product['id']) }}">{{ product['name'] }}</a></td>
+								<td>£{{ product['price'] }}</td>
+								<td>{{ product['quantity'] }}</td>
+								<td>£{{ product['total'] }}</td>
+							</tr>
+						{% endfor %}
+						<tr>
+							<td colspan="4">
+								<span class="thick">Total: £{{ value['total'] }}</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
 			{% endfor %}
 			</ul>
 		<hr>

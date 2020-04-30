@@ -7,8 +7,8 @@
 	<h1>Checkout</h1>
 	<fieldset>
 		<legend>Order Summary</legend>
-		<p>Order Total: £{{ total }}</p>
-		<input type="submit" value="Edit Basket">
+		<span class="thick">Order Total: £{{ total }}</span>
+		<a href="{{ url_for('basket') }}" class="button small_button">Edit Basket</a>
 	</fieldset>
 
 	<form method="POST" action="{{ url_for('checkout')}}">
